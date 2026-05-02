@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>듀얼트랙 GIS 학습 프레임워크 - Unit 05 (Gemini Independent Run)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --text-main: #2c3e50;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -1px;
+            color: #7f8c8d;
+        }
+
+        header p {
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-top: 10px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .foundation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 50px;
+            border-left: 12px solid #bdc3c7;
+        }
+
+        .foundation-card h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .foundation-card p, .foundation-card ul {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+        }
+
+        .foundation-card ul { list-style: none; padding: 0; }
+        .foundation-card li { margin-bottom: 15px; position: relative; padding-left: 30px; }
+        .foundation-card .icon-pin { position: absolute; left: 0; }
+
+        .dual-track {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .track-card {
+            background: white;
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            min-height: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card.arcgis { border-top: 15px solid var(--arcgis-orange); }
+        .track-card.python { border-top: 15px solid var(--python-blue); }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .track-icon {
+            font-size: 3rem;
+            background: #f1f3f5;
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
+
+        .track-title-group h2 { margin: 0; font-size: 1.8rem; }
+        .arcgis .track-title-group h2 { color: var(--arcgis-orange); }
+        .python .track-title-group h2 { color: var(--python-blue); }
+
+        .track-subtitle { margin: 0; color: #7f8c8d; font-size: 1.1rem; }
+
+        .track-intro {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .concept-box {
+            background: #fff;
+            border: 1px solid #f0f4f8;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .concept-box .label {
+            font-weight: 800;
+            color: #a0aec0;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1rem;
+        }
+
+        .concept-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.3rem;
+            color: #2d3748;
+        }
+
+        .concept-box p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .arcgis .concept-box { border-left-color: var(--arcgis-orange); }
+        .python .concept-box { border-left-color: var(--python-blue); }
+
+        details {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        summary {
+            padding: 25px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .arcgis summary { background: var(--arcgis-orange); color: white; }
+        .python summary { background: var(--python-blue); color: white; }
+
+        summary::after { content: '▼'; font-size: 1rem; }
+        details[open] summary::after { content: '▲'; }
+
+        .details-content {
+            padding: 40px;
+            background: #fff;
+        }
+
+        .step-title {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .arcgis .step-title { color: var(--arcgis-orange); }
+        .python .step-title { color: var(--python-blue); }
+
+        .ui-path {
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .ui-path span { color: #f1c40f; margin: 0 8px; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th { background: #f8f9fa; width: 40%; font-weight: 800; }
+
+        .code-block {
+            background: #0f1115;
+            color: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin-bottom: 35px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid #2d3436;
+        }
+
+        .code-comment { 
+            color: #95a5a6;
+            font-style: italic; 
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .code-keyword { color: #3498db; font-weight: 700; }
+        .code-function { color: #2ecc71; font-weight: 700; }
+        .code-string { color: #f1c40f; }
+        .code-number { color: #e67e22; }
+
+        .mindset-box {
+            margin-top: 40px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 35px;
+            background: #fbfcfd;
+        }
+
+        .mindset-box h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindset-box ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mindset-box li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .mindset-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .dual-track { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav style="background-color: var(--primary-bg); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-grey);">
+    <a href="index.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">🏠 Dashboard</a>
+    <a href="unit01.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 01</a>
+    <a href="unit02.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 02</a>
+    <a href="unit03.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 03</a>
+    <a href="unit04.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 04</a>
+    <a href="unit05.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 05</a>
+    <a href="unit05-gemini.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 1; border-bottom: 2px solid var(--python-blue);">Unit 05 (Gemini)</a>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>듀얼트랙 GIS 학습 프레임워크</h1>
+        <p>Unit 05: 원격 데이터 서비스 기반 재해 지도 제작 (Gemini Independent Run)</p>
+    </header>
+
+    <section class="foundation-card">
+        <h2>🌐 1. 기본 개념 (공통 목표)</h2>
+        <ul>
+            <li><span class="icon-pin">📌</span> <b>해결 과제:</b> 미국의 한 지역을 골라 flood 또는 geologic hazard 지도를 만들되, 모든 레이어를 local shapefile이 아니라 <b>remote data service</b>에서 직접 불러와야 합니다.</li>
+            <li><span class="icon-pin">📌</span> <b>이번 Python 산출물의 시나리오:</b> Los Angeles (Santa Monica ~ DTLA) 지역의 지진성 지반재해 지도를 원격 데이터만으로 구축하되, <b>런타임 서버 에러(FEMA 다운 등)를 동적으로 방어하는 견고한 아키텍처</b>를 시연합니다.</li>
+            <li><span class="icon-pin">📌</span> <b>사용한 원격 서비스:</b>
+                <br>&nbsp;&nbsp;&nbsp;- USGS NAIP ImageServer: 원격 imagery 배경.
+                <br>&nbsp;&nbsp;&nbsp;- California Conservation / CGS fault traces: 과제 링크 계열의 지진 단층 서비스.
+                <br>&nbsp;&nbsp;&nbsp;- California GIS liquefaction service: 액상화 위험 구역.
+                <br>&nbsp;&nbsp;&nbsp;- California Quaternary Faults FeatureServer: 학생이 직접 고른 추가 원격 hazard source.
+            </li>
+            <li><span class="icon-pin">📌</span> <b>핵심 기술 포인트:</b>
+                <br>&nbsp;&nbsp;&nbsp;- <b>우아한 실패 처리(Graceful Degradation):</b> 접속할 수 없는 서버가 있더라도 프로그램이 멈추지 않고, 영수증(Manifest)에 실패 이력을 남기며 동작을 이어갑니다.
+            </li>
+        </ul>
+    </section>
+
+    <div class="dual-track">
+        <!-- ArcGIS Track -->
+        <div class="track-card arcgis">
+            <div class="track-header">
+                <div class="track-icon">🖱️</div>
+                <div class="track-title-group">
+                    <h2>ArcGIS Pro 구현</h2>
+                    <p class="track-subtitle">도구 숙련자 및 오퍼레이터 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">ArcGIS 방식은 로컬 파일을 Add Data로 추가하는 것이 아니라, Catalog에서 ArcGIS Server 또는 WMS/REST endpoint에 연결한 뒤 서비스 레이어를 지도에 올리는 과정입니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>원격 서버 연결</h3>
+                <p>Catalog pane에서 ArcGIS Server connection을 만들고, course tip에 있는 USGS NAIP 또는 California Conservation 서버 URL을 등록합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>재해 레이어 3개 이상 추가</h3>
+                <p>지도에는 최소 3개 원격 서비스가 동시에 들어가야 합니다. 한 개는 과제 링크에서, 한 개는 직접 찾은 외부 서비스에서 가져와야 합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>정적 지도와 Project ZIP 제출</h3>
+                <p>Layout에서 지도, 범례, 출처, 제목을 정리해 PDF로 내보냅니다. ArcGIS 과제 제출물은 PDF map과 APRX project directory ZIP입니다.</p>
+            </div>
+
+            <details>
+                <summary>🛠️ ArcGIS Pro 실전 운용 매뉴얼</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 오퍼레이터의 필수 관문: “로컬 파일 없이 원격 서비스만으로 지도 만들기” 버튼 클릭 가이드</p>
+                    
+                    <span class="step-title">[1단계] ArcGIS Server 연결 만들기</span>
+                    <span class="ui-path">Catalog pane <span>▶</span> Servers <span>▶</span> Add ArcGIS Server</span>
+                    <table>
+                        <tr><th>Server URL 1</th><td>https://imagery.nationalmap.gov/arcgis/rest/services</td></tr>
+                        <tr><th>Server URL 2</th><td>https://gis.conservation.ca.gov/server/rest/</td></tr>
+                        <tr><th>Connection Type</th><td>Use GIS Services 선택</td></tr>
+                        <tr><th>주의</th><td>FEMA NFHL 링크가 열리지 않으면 같은 주제의 다른 원격 hazard service를 찾아 사용하고 출처를 기록</td></tr>
+                    </table>
+
+                    <span class="step-title">[2단계] Map에 원격 레이어 추가</span>
+                    <span class="ui-path">Catalog pane <span>▶</span> Server connection <span>▶</span> Service layer 우클릭 <span>▶</span> Add To Current Map</span>
+                    <table>
+                        <tr><th>Imagery Basemap</th><td>USGS NAIP Imagery ImageServer</td></tr>
+                        <tr><th>Course-linked Hazard</th><td>CGS Alquist-Priolo Fault Traces MapServer</td></tr>
+                        <tr><th>Hazard Polygon</th><td>Liquefaction Zone of Required Investigation</td></tr>
+                        <tr><th>Student-selected Source</th><td>California Quaternary Faults FeatureServer 같은 외부 원격 서비스</td></tr>
+                    </table>
+
+                    <span class="step-title">[3단계] 지도 범위와 디자인 정리</span>
+                    <span class="ui-path">Map 탭 <span>▶</span> Locate 또는 Pan/Zoom <span>▶</span> Los Angeles Basin, California</span>
+                    <table>
+                        <tr><th>Geographic Scope</th><td>Los Angeles (Santa Monica to DTLA)</td></tr>
+                        <tr><th>Transparency</th><td>Liquefaction polygon은 40-55% 투명도</td></tr>
+                        <tr><th>Line Symbols</th><td>Fault traces는 굵은 red/purple line으로 구분</td></tr>
+                        <tr><th>Layer Order</th><td>Imagery 아래, polygon 중간, fault line 위</td></tr>
+                    </table>
+
+                    <span class="step-title">[4단계] Layout과 출처 표기</span>
+                    <span class="ui-path">Insert 탭 <span>▶</span> New Layout <span>▶</span> Map Frame <span>▶</span> Legend / Text</span>
+                    <table>
+                        <tr><th>Title</th><td>Los Angeles Seismic Ground-Failure Hazards</td></tr>
+                        <tr><th>Legend</th><td>Liquefaction Zone, AP Fault Trace, Quaternary Fault</td></tr>
+                        <tr><th>Source Note</th><td>각 서비스 URL 또는 기관명 명시</td></tr>
+                        <tr><th>Metadata Note</th><td>원격 서비스는 사용 가능성·축척·렌더링 제한을 반드시 확인</td></tr>
+                    </table>
+
+                    <span class="step-title">[5단계] PDF와 Project ZIP 제출</span>
+                    <span class="ui-path">Share 탭 <span>▶</span> Export Layout <span>▶</span> File Type: PDF</span>
+                    <table>
+                        <tr><th>PDF</th><td>정적 hazard map PDF</td></tr>
+                        <tr><th>Project ZIP</th><td>APRX project directory 압축. 단, map layer가 local file을 참조하면 감점</td></tr>
+                        <tr><th>Self-check</th><td>Layer Properties의 Source가 URL인지 확인</td></tr>
+                    </table>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧐 오퍼레이터의 마인드셋</h4>
+                <ul>
+                    <li>"이 레이어는 내 컴퓨터 파일인가, 서버 주소에서 온 원격 서비스인가?"</li>
+                    <li>"서버가 닫히거나 느려질 때, 나는 어떤 대체 서비스를 찾고 출처를 어떻게 기록할 것인가?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Python Track -->
+        <div class="track-card python">
+            <div class="track-header">
+                <div class="track-icon">💻</div>
+                <div class="track-title-group">
+                    <h2>Python 로직 및 아키텍처</h2>
+                    <p class="track-subtitle">지식 창조자 및 GIS 엔지니어 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">Python 방식은 ArcGIS Pro의 “서버 연결 후 레이어 추가”를 코드로 재현합니다. 서버 주소를 목록으로 만들고, 필요한 bbox만 요청하고, 받은 이미지와 GeoJSON을 겹쳐 지도와 PDF를 자동 생성합니다. 이번 독립 수행에서는 서버 에러에 대응하는 `try-except` 우회 로직을 추가했습니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>서비스 주소와 BBOX 정의</h3>
+                <p>분석 범위를 Los Angeles Basin 모서리 좌표로 정하고, 각 원격 서비스 URL을 manifest에 남깁니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>REST 요청 방어 로직 (Try-Except)</h3>
+                <p><code>requests.get()</code>이 서버 다운이나 포맷 오류를 마주했을 때 앱이 터지지 않도록 예외 처리 블록으로 감싸 우아하게 대응합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>지도·표·PDF 자동 생성</h3>
+                <p><code>GeoPandas</code>로 원격 GeoJSON을 읽고, <code>Matplotlib</code>로 정적 지도 PNG를 그린 뒤, <code>ReportLab</code>으로 PDF 보고서를 만듭니다.</p>
+            </div>
+
+            <details>
+                <summary>👨‍💻 Python 코어 로직 해설</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식 창조자의 무기: 실제 `unit05_gemini_pipeline.py`가 수행한 원격 서비스 기반 hazard mapping 흐름입니다. 주석은 초보자도 따라올 수 있게 풀어 썼습니다.</p>
+
+                    <span class="step-title">[핵심 로직 0] 원격 서비스 주소 목록 만들기</span>
+                    <div class="code-block">
+<span class="code-comment"># RemoteService는 자료 출처 영수증입니다.
+# 서비스 이름, URL, 과제 링크 여부, 역할을 한 줄 카드처럼 보관합니다.</span>
+RemoteService(
+    key=<span class="code-string">"fema_nfhl_attempted"</span>,
+    label=<span class="code-string">"FEMA NFHL"</span>,
+    url=<span class="code-string">"https://hazards.fema.gov/.../WMSServer"</span>,
+    course_linked=<span class="code-string">"Yes"</span>,
+    role=<span class="code-string">"Attempted flood hazard service"</span>,
+)
+
+<span class="code-comment"># BBOX는 지도 창의 네 모서리입니다.
+# 왼쪽, 아래, 오른쪽, 위 순서로 LA Basin 범위를 잡습니다.</span>
+BBOX = (-<span class="code-number">118.45</span>, <span class="code-number">33.95</span>, -<span class="code-number">118.15</span>, <span class="code-number">34.15</span>)</div>
+
+                    <span class="step-title">[핵심 로직 1] 서버 연결 방어 코딩 (Graceful Degradation)</span>
+                    <div class="code-block">
+<span class="code-comment"># "혹시 이 서버가 이상한 문서를 보내면 어떡하지?"를 대비하는 try-except 구조입니다.</span>
+<span class="code-keyword">try</span>:
+    response = request_url(<span class="code-string">f"{service.url}/query"</span>, params=params)
+    payload = response.json()
+    
+    <span class="code-comment"># 서버가 잘 응답하면 영수증(manifest)에 성공 도장을 찍습니다.</span>
+    service.status = <span class="code-string">"available"</span>
+    service.record_count = len(features)
+    
+<span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
+    <span class="code-comment"># 서버가 죽었어도 프로그램은 죽지 않습니다!
+    # 영수증에 "실패함"이라고 기록하고 빈 봉투(빈 데이터)를 돌려보냅니다.</span>
+    service.status = <span class="code-string">"unavailable"</span>
+    service.note = <span class="code-string">f"Dynamic fallback triggered: {e}"</span>
+    <span class="code-keyword">return</span> gpd.GeoDataFrame(geometry=[], crs=<span class="code-string">"EPSG:4326"</span>)</div>
+
+                    <span class="step-title">[핵심 로직 2] LA 범위 안에서 위험 면적과 단층 길이 계산하기</span>
+                    <div class="code-block">
+<span class="code-comment"># WGS84 위경도는 길이/면적 계산에 불편합니다.
+# 그래서 California Albers 좌표계(EPSG:3310)로 바꾼 뒤 km, sq km를 계산합니다.</span>
+projected = liquefaction.to_crs(<span class="code-string">"EPSG:3310"</span>)
+liquefaction_area_km2 = projected.area.sum() / <span class="code-number">1_000_000</span>
+
+fault_length_km = ap_faults.to_crs(<span class="code-string">"EPSG:3310"</span>).length.sum() / <span class="code-number">1000</span>
+
+<span class="code-comment"># 이번 실행 결과: LA 지도 창의 30.7%가 liquefaction zone과 겹쳤습니다.</span></div>
+
+                    <span class="step-title">[핵심 로직 3] NAIP 위에 hazard layer를 겹쳐 static map 만들기</span>
+                    <div class="code-block">
+<span class="code-comment"># 먼저 원격 NAIP 이미지를 지도 바닥에 깝니다.</span>
+<span class="code-keyword">if</span> naip_path.exists():
+    ax.imshow(image, extent=[xmin, xmax, ymin, ymax], origin=<span class="code-string">"upper"</span>)
+
+<span class="code-comment"># 그 위에 액상화 구역은 노란 반투명 폴리곤으로 칠합니다.</span>
+liquefaction.plot(ax=ax, facecolor=<span class="code-string">"#f4d03f"</span>, alpha=<span class="code-number">0.45</span>)
+
+<span class="code-comment"># 단층선은 빨간색과 보라색 선으로 올려서 위험 축이 눈에 보이게 합니다.</span>
+ap_faults.plot(ax=ax, color=<span class="code-string">"#e74c3c"</span>, linewidth=<span class="code-number">2.1</span>)
+q_faults.plot(ax=ax, color=<span class="code-string">"#8e44ad"</span>, linewidth=<span class="code-number">1.6</span>)
+
+<span class="code-comment"># 마지막으로 PNG 지도로 저장합니다.</span>
+fig.savefig(OUTPUT_MAP, dpi=<span class="code-number">220</span>)</div>
+
+                    <span class="step-title">[핵심 로직 4] PDF 보고서와 manifest를 인쇄하듯 저장하기</span>
+                    <div class="code-block">
+<span class="code-comment"># manifest는 "어떤 원격 서비스를 썼는지" 남기는 출처 영수증입니다.
+# 예외 처리된 FEMA 다운 이력도 그대로 영수증에 남습니다.</span>
+manifest.to_csv(OUTPUT_MANIFEST, index=<span class="code-keyword">False</span>)
+
+<span class="code-comment"># ReportLab은 PDF 인쇄기입니다.
+# 지도 그림, 요약 표, 원격 서비스 ledger를 차례대로 종이에 올립니다.</span>
+doc = SimpleDocTemplate(str(OUTPUT_PDF), pagesize=letter)
+elements.append(Image(str(OUTPUT_MAP), width=<span class="code-number">510</span>, height=<span class="code-number">382</span>))
+elements.append(summary_table)
+elements.append(manifest_table)
+doc.build(elements)</div>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧠 지식 창조자의 마인드셋</h4>
+                <ul>
+                    <li>"외부 서버 의존성이 높은 코드에서, 런타임 오류가 내 파이프라인 전체를 무너뜨리게 놔두고 있는가?"</li>
+                    <li>"장애를 감추는 대신 우아하게 fallback하고 영수증(manifest)에 투명하게 기록할 수 있는가?"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="foundation-card" style="margin-top: 80px; border-left: 12px solid var(--python-blue);">
+        <h2 style="color: var(--python-blue); display: flex; align-items: center; gap: 15px;">
+            <span style="font-size: 2.5rem;">🎓</span> Final Results & Portfolio (Gemini Independent Run)
+        </h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 60px; margin-top: 40px;">
+            
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 20px; border-left: 10px solid var(--python-blue); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
+                    <div style="font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">⚡</div>
+                    <div>
+                        <h3 style="color: var(--python-blue); margin: 0; font-size: 1.6rem;">Python Engineer Pipeline Output</h3>
+                        <p style="margin: 5px 0 0 0; color: #7f8c8d;">원격 GIS 서비스만 사용한 Los Angeles 지진성 지반재해 지도</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.1rem; color: #444; line-height: 1.7; margin-bottom: 40px;">
+                    제미나이가 독립적으로 작성한 파이프라인은 USGS NAIP ImageServer, California Conservation CGS fault traces, California liquefaction service, California Quaternary Faults FeatureServer를 원격으로 호출했습니다. 
+                    FEMA NFHL 서비스의 실패는 try-except 구문으로 완벽히 통제되어 manifest에 "unavailable" 및 예외 메시지로 기록되었으며, 나머지 Geologic Hazard 지도 렌더링은 중단 없이 정상적으로 수행되었습니다.
+                </p>
+                
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <a href="reports/unit05-gemini/LA_Remote_Hazard_Map_UCLA_Unit05_Gemini.pdf" target="_blank" 
+                       style="display: inline-block; padding: 18px 40px; background: var(--python-blue); color: white; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 10px 20px rgba(0, 112, 192, 0.2);">
+                        View Full Python Hazard Map PDF
+                    </a>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit05-gemini/LA_Remote_Hazard_Map_Gemini.png" alt="LA seismic ground-failure hazard map" style="width: 100%; border-radius: 10px; display: block;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Static Hazard Map: Remote Services Only</p>
+                        <p style="margin: 8px 0 0 0; color: #7f8c8d; font-size: 0.95rem;">Liquefaction zones, AP fault traces, quaternary faults, and NAIP imagery</p>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                        <h4 style="margin-top: 0; color: var(--python-blue); font-size: 1.25rem;">Remote Service Summary</h4>
+                        <table>
+                            <tr><th>AOI area</th><td>614.5 sq km</td></tr>
+                            <tr><th>Liquefaction zone</th><td>188.8 sq km · 30.7% of map window</td></tr>
+                            <tr><th>AP fault trace length</th><td>62.3 km (175 features)</td></tr>
+                            <tr><th>Quaternary fault length</th><td>92.4 km (110 features)</td></tr>
+                        </table>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <a href="reports/unit05-gemini/unit05_gemini_service_manifest.csv" target="_blank" 
+                               style="display: inline-block; padding: 12px 24px; background: #2c3e50; color: white; text-decoration: none; border-radius: 10px; font-weight: 800;">
+                                Open Service Manifest CSV
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #0f1115; padding: 30px; border-radius: 15px; border: 1px solid #2d3436;">
+                    <h4 style="color: #95a5a6; margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">📊 Pipeline Performance Logs</h4>
+                    <div style="font-family: 'Fira Code', monospace; color: #2ecc71; font-size: 0.95rem; line-height: 1.6;">
+                        <span style="color: #95a5a6;">[WARN]</span> Failed to query fema_nfhl_attempted: WMSServer does not support /query natively<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Requesting NAIP imagery from USGS ImageServer... available<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Querying CGS Alquist-Priolo Fault Traces... 175 features<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Querying Liquefaction Zones... 30 features<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Querying California Quaternary Faults... 110 features<br>
+                        <span style="color: #95a5a6;">[INFO]</span> PDF report generated: 4 pages.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 40px; color: #94a3b8; font-size: 0.95rem; border-top: 1px solid #eee;">
+        &copy; 2026 UCLA Extension Advanced GIS - Dual-Track Learning Framework Project
+    </footer>
+</div>
+
+</body>
+</html>

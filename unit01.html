@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>듀얼트랙 GIS 학습 프레임워크 - Unit 01</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --text-main: #2c3e50;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -1px;
+            color: #7f8c8d;
+        }
+
+        header p {
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-top: 10px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .foundation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 50px;
+            border-left: 12px solid #bdc3c7;
+        }
+
+        .foundation-card h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .foundation-card p, .foundation-card ul {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+        }
+
+        .foundation-card ul { list-style: none; padding: 0; }
+        .foundation-card li { margin-bottom: 15px; position: relative; padding-left: 30px; }
+        .foundation-card .icon-pin { position: absolute; left: 0; }
+
+        .dual-track {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .track-card {
+            background: white;
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            min-height: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card.arcgis { border-top: 15px solid var(--arcgis-orange); }
+        .track-card.python { border-top: 15px solid var(--python-blue); }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .track-icon {
+            font-size: 3rem;
+            background: #f1f3f5;
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
+
+        .track-title-group h2 { margin: 0; font-size: 1.8rem; }
+        .arcgis .track-title-group h2 { color: var(--arcgis-orange); }
+        .python .track-title-group h2 { color: var(--python-blue); }
+
+        .track-subtitle { margin: 0; color: #7f8c8d; font-size: 1.1rem; }
+
+        .track-intro {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .concept-box {
+            background: #fff;
+            border: 1px solid #f0f4f8;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .concept-box .label {
+            font-weight: 800;
+            color: #a0aec0;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1rem;
+        }
+
+        .concept-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.3rem;
+            color: #2d3748;
+        }
+
+        .concept-box p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .arcgis .concept-box { border-left-color: var(--arcgis-orange); }
+        .python .concept-box { border-left-color: var(--python-blue); }
+
+        details {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        summary {
+            padding: 25px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .arcgis summary { background: var(--arcgis-orange); color: white; }
+        .python summary { background: var(--python-blue); color: white; }
+
+        summary::after { content: '▼'; font-size: 1rem; }
+        details[open] summary::after { content: '▲'; }
+
+        .details-content {
+            padding: 40px;
+            background: #fff;
+        }
+
+        .step-title {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .arcgis .step-title { color: var(--arcgis-orange); }
+        .python .step-title { color: var(--python-blue); }
+
+        .ui-path {
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .ui-path span { color: #f1c40f; margin: 0 8px; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th { background: #f8f9fa; width: 40%; font-weight: 800; }
+
+        .code-block {
+            background: #0f1115;
+            color: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin-bottom: 35px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid #2d3436;
+        }
+
+        .code-comment { 
+            color: #95a5a6;
+            font-style: italic; 
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .code-keyword { color: #3498db; font-weight: 700; }
+        .code-function { color: #2ecc71; font-weight: 700; }
+        .code-string { color: #f1c40f; }
+        .code-number { color: #e67e22; }
+
+        .mindset-box {
+            margin-top: 40px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 35px;
+            background: #fbfcfd;
+        }
+
+        .mindset-box h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindset-box ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mindset-box li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .mindset-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .dual-track { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav style="background-color: var(--primary-bg); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-grey);">
+    <a href="index.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">🏠 Dashboard</a>
+    <a href="unit01.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 1; border-bottom: 2px solid var(--python-blue);">Unit 01</a>
+    <a href="unit02.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 02</a>
+    <a href="unit03.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 03</a>
+    <a href="unit04.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 04</a>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>듀얼트랙 GIS 학습 프레임워크</h1>
+        <p>Unit 01: 공간 보간 및 지구통계학 (Spatial Interpolation & Geostatistics)</p>
+    </header>
+
+    <section class="foundation-card">
+        <h2>🌏 1. 기본 개념 (공통 목표)</h2>
+        <ul>
+            <li><span class="icon-pin">📌</span> <b>해결 과제:</b> 캘리포니아 전역의 기상 관측소 온도 데이터만 가지고 있을 때, 관측소가 없는 나머지 모든 지역의 예상 온도를 수학적으로 추정해서 채워 넣는 작업입니다. 이를 통해 가장 덥거나 추운 도시를 찾아낼 수 있습니다.</li>
+            <li><span class="icon-pin">📌</span> <b>필요한 데이터:</b>
+                <br>&nbsp;&nbsp;&nbsp;- <b>점(Point) 데이터:</b> 측정값이 포함된 기상 관측소 온도 CSV.
+                <br>&nbsp;&nbsp;&nbsp;- <b>DEM(Digital Elevation Model):</b> 지형의 고도가 온도에 미치는 영향을 이해하기 위한 데이터.
+                <br>&nbsp;&nbsp;&nbsp;- <b>경계 폴리곤(Polygon):</b> 결과물을 집계할 도시 경계선 데이터.
+            </li>
+            <li><span class="icon-pin">📌</span> <b>핵심 공간 개념:</b>
+                <br>&nbsp;&nbsp;&nbsp;- <b>토블러의 지리학 제1법칙:</b> "모든 것은 관련되어 있지만, 가까운 것들이 먼 것들보다 더 비슷하다."
+                <br>&nbsp;&nbsp;&nbsp;- <b>IDW (역거리 가중치):</b> 단순히 거리에 반비례하여 빈 공간을 채우는 방식입니다.
+                <br>&nbsp;&nbsp;&nbsp;- <b>Kriging (크리깅):</b> 데이터의 통계적 패턴까지 고려하여 채우는 똑똑한 지구통계학적 방식입니다.
+            </li>
+        </ul>
+    </section>
+
+    <div class="dual-track">
+        <!-- ArcGIS Track -->
+        <div class="track-card arcgis">
+            <div class="track-header">
+                <div class="track-icon">🖱️</div>
+                <div class="track-title-group">
+                    <h2>ArcGIS Pro 구현</h2>
+                    <p class="track-subtitle">도구 숙련자 및 오퍼레이터 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">ArcGIS 워크플로우는 사용자가 직접 화면의 버튼을 누르고, 설정 값을 입력하여 통계 마법사를 실행하는 데 중점을 둡니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>데이터 획득 및 점 변환</h3>
+                <p>NOAA 웹사이트에서 CSV 데이터를 다운로드하고, 'Display XY Data' 기능을 사용하여 숫자를 지도 위의 실제 점으로 변환합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>지구통계 마법사 (Geostatistical Wizard)</h3>
+                <p>복잡한 통계 계산을 도와주는 마법사 창을 통해 EBK(Empirical Bayesian Kriging) 모델을 선택합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>구역 통계 (Zonal Statistics)</h3>
+                <p>분석된 온도 지도를 바탕으로 각 도시 경계 내의 평균 온도를 계산하여 최종 테이블을 도출합니다.</p>
+            </div>
+
+            <details>
+                <summary>🛠️ ArcGIS Pro 실전 운용 매뉴얼</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 오퍼레이터의 필수 관문: 단계별 버튼 클릭 가이드</p>
+                    
+                    <span class="step-title">[1단계] 점 데이터 생성 (Display XY Data)</span>
+                    <span class="ui-path">데이터 레이어 우클릭 <span>▶</span> Display XY Data</span>
+                    <table>
+                        <tr><th>X Field / Y Field</th><td>Longitude / Latitude 지정</td></tr>
+                        <tr><th>Coordinate System</th><td>WGS 1984 지정</td></tr>
+                    </table>
+
+                    <span class="step-title">[2단계] 보간법 실행 (EBK)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Geostatistical Wizard <span>▶</span> EBK</span>
+                    <table>
+                        <tr><th>Dataset / Data Field</th><td>관측소 레이어 / TEMP 필드 지정</td></tr>
+                        <tr><th>Optimize</th><td>최적화 버튼 클릭 후 [Finish]</td></tr>
+                    </table>
+
+                    <span class="step-title">[3단계] 구역 통계 추출 (Zonal Statistics)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> Zonal Statistics as Table</span>
+                    <table>
+                        <tr><th>Input Zone / Value Raster</th><td>도시 경계 폴리곤 / 온도 래스터</td></tr>
+                        <tr><th>Statistics Type</th><td>Mean (평균) 선택</td></tr>
+                    </table>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧐 오퍼레이터의 마인드셋</h4>
+                <ul>
+                    <li>"리본 메뉴에서 도구 버튼이 어디에 숨어 있지?"</li>
+                    <li>"이 결과물 파일을 GDB의 어느 폴더에 저장해야 안전할까?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Python Track -->
+        <div class="track-card python">
+            <div class="track-header">
+                <div class="track-icon">💻</div>
+                <div class="track-title-group">
+                    <h2>Python 로직 및 아키텍처</h2>
+                    <p class="track-subtitle">지식 창조자 및 GIS 엔지니어 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">파이썬 방식은 API를 통한 자동 수집과 수학적 알고리즘 직접 제어에 집중합니다. 이번 실행에서는 Meteostat에서 1991-2020 기후 정상값을 가져오고, PyKrige로 1월/8월 기온면을 만든 뒤, 도시 경계 자료와 겹쳐 PDF 리포트를 자동 생성했습니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>자동화된 데이터 수집 (API)</h3>
+                <p>매번 웹사이트에 접속하는 대신 <code>meteostat</code> 라이브러리를 사용하여 코드가 기상청 서버에서 데이터를 긁어옵니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>알고리즘적 보간 (PyKrige)</h3>
+                <p>마법사 창 대신 <code>OrdinaryKriging</code> 클래스를 호출합니다. 수학 공식을 코드에 직접 넣어 격자판의 숫자를 계산합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>메모리 기반 구역 통계</h3>
+                <p>결과를 파일로 저장하지 않고 컴퓨터 메모리 위에서 <code>rasterstats</code>를 사용하여 평균값을 즉시 뽑아냅니다.</p>
+            </div>
+
+            <details>
+                <summary>👨‍💻 Python 코어 로직 해설 (실제 작동 엔진)</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식 창조자의 무기: 실제 PDF 리포트를 생성하는 데 사용된 파이썬 엔진의 핵심 심장부입니다. (주석: 초보자 눈높이 설명)</p>
+
+                    <span class="step-title">[핵심 로직 1] 인터넷 기상청에서 자료 긁어오기 (API 수집)</span>
+                    <div class="code-block">
+<span class="code-comment"># [설명] 마우스로 클릭해서 다운로드받지 않고, 파이썬이 직접 인터넷 기상청(Meteostat)에 접속해서 
+# 캘리포니아의 수백 개 날씨 지점 자료를 '순식간에' 가져오는 코드입니다.</span>
+<span class="code-keyword">from</span> meteostat <span class="code-keyword">import</span> Stations, Normals
+
+<span class="code-comment"># 1. 캘리포니아(CA)에 있는 모든 날씨 지점(관측소) 리스트를 부릅니다.</span>
+stations = Stations().region(<span class="code-string">'US'</span>, <span class="code-string">'CA'</span>).fetch()
+
+<span class="code-comment"># 2. 반복문(for)을 돌며 각 지점의 30년치 평균 기온(Normals)을 쏙쏙 뽑아옵니다.</span>
+<span class="code-keyword">for</span> idx, station <span class="code-keyword">in</span> stations.iterrows():
+    <span class="code-comment"># 기상청 서버에 "자료 좀 줘!"라고 요청합니다.</span>
+    data = Normals(idx, <span class="code-number">1991</span>, <span class="code-number">2020</span>).fetch()
+    <span class="code-comment"># 가져온 자료에서 위경도(좌표)와 기온값만 바구니에 담습니다.</span>
+    records.append({<span class="code-string">'lat'</span>: station[<span class="code-string">'latitude'</span>], <span class="code-string">'lon'</span>: station[<span class="code-string">'longitude'</span>], <span class="code-string">'temp'</span>: data.loc[<span class="code-number">1</span>, <span class="code-string">'tmax'</span>]})</div>
+
+                    <span class="step-title">[핵심 로직 2] 빈칸 채우기 마법 (Kriging 보간법)</span>
+                    <div class="code-block">
+<span class="code-comment"># [설명] 날씨 지점이 없는 '빈 땅'의 온도가 궁금할 때 쓰는 수학적 방법입니다. 
+# "가까운 곳끼리는 날씨가 비슷할 거야!"라는 원리를 이용해 캘리포니아 전체를 촘촘한 기온 지도로 채웁니다.</span>
+<span class="code-keyword">from</span> pykrige.ok <span class="code-keyword">import</span> OrdinaryKriging
+
+<span class="code-comment"># 1. 'OrdinaryKriging'이라는 빈칸 채우기 도구를 준비합니다.</span>
+<span class="code-comment">#    여기에 아까 모은 위경도(lon, lat)와 기온(temp)을 집어넣습니다.</span>
+ok = OrdinaryKriging(df.lon, df.lat, df.temp, variogram_model=<span class="code-string">'spherical'</span>)
+
+<span class="code-comment"># 2. 캘리포니아 지도를 촘촘한 그물망(Grid)으로 나누고 전체 기온을 한 번에 계산(execute)합니다.</span>
+<span class="code-comment">#    이제 지점 데이터가 '면' 형태의 거대한 지도로 변신합니다!</span>
+z_pred, ss = ok.execute(<span class="code-string">'grid'</span>, grid_lon, grid_lat)</div>
+
+                    <span class="step-title">[핵심 로직 3] 지도 겹쳐서 도시 기온 뽑기 (Zonal Statistics)</span>
+                    <div class="code-block">
+<span class="code-comment"># [설명] 우리가 만든 기온 지도 위에 '도시 경계선' 지도를 겹쳐 올리는 과정입니다.
+# 도시가 위치한 지점의 기온값을 수학적으로 정확하게 읽어내어 표로 만듭니다.</span>
+<span class="code-keyword">def</span> <span class="code-function">get_city_temp</span>(city_geom, grid_lon, grid_lat, z_data):
+    <span class="code-comment"># 1. 도시의 정중앙 지점(centroid)을 찾습니다.</span>
+    point = city_geom.centroid
+    <span class="code-comment"># 2. 기온 지도의 격자판에서 도시 위치와 가장 가까운 칸의 번호를 찾습니다(argmin).</span>
+    ix = np.abs(grid_lon - point.x).argmin()
+    iy = np.abs(grid_lat - point.y).argmin()
+    <span class="code-comment"># 3. 그 칸에 적힌 온도 숫자를 읽어서 돌려줍니다. (이게 바로 도시별 예상 기온!)</span>
+    <span class="code-keyword">return</span> z_data[iy, ix]</div>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧠 지식 창조자의 마인드셋</h4>
+                <ul>
+                    <li>"ArcGIS 없이 오직 내 코드만으로 수백 개의 도시 기온을 1초 만에 분석할 수 있는가?"</li>
+                    <li>"내가 만든 이 분석 파이프라인이 전 세계 어느 지역에서든 똑같이 작동할 수 있도록 일반화되었는가?"</li>
+                    <li>"단순한 결과물을 넘어, 누구나 이해할 수 있는 완벽한 리포트를 코드로 자동 생성(Auto-Report)할 수 있는가?"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="foundation-card" style="margin-top: 80px; border-left: 12px solid var(--python-blue);">
+        <h2 style="color: var(--python-blue); display: flex; align-items: center; gap: 15px;">
+            <span style="font-size: 2.5rem;">🎓</span> Final Results & Portfolio
+        </h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 60px; margin-top: 40px;">
+            
+            <!-- 🖱️ Track 1: Python Engine Analysis Report -->
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 20px; border-left: 10px solid var(--python-blue); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
+                    <div style="font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">📄</div>
+                    <div>
+                        <h3 style="color: var(--python-blue); margin: 0; font-size: 1.6rem;">Python Engineer Analysis Report (PDF)</h3>
+                        <p style="margin: 5px 0 0 0; color: #7f8c8d;">파이썬 자동화 엔진 기반 최종 기후 분석 결과물</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.1rem; color: #444; line-height: 1.7; margin-bottom: 30px;">
+                    ArcGIS Pro를 전혀 사용하지 않고, <b>오직 파이썬 엔지니어링 기술만으로</b> 데이터 수집, 공간 연산, 시각화, 문서화를 자동 수행한 결과입니다. 
+                    Kriging 및 Zonal Statistics 알고리즘을 코드로 구현하여 캘리포니아 전역의 도시별 기온을 추정한 전문 분석 보고서입니다.
+                </p>
+                <div style="text-align: center;">
+                    <a href="reports/unit01/California_Climate_Analysis_Report_Python.pdf" target="_blank" 
+                       style="display: inline-block; padding: 18px 40px; background: var(--python-blue); color: white; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 10px 20px rgba(0, 112, 192, 0.2);">
+                        View Full Python Analysis Report (PDF)
+                    </a>
+                </div>
+            </div>
+
+            <!-- 💻 Track 2: Python Engine Visual Output -->
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 20px; border-left: 10px solid var(--python-blue); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
+                    <div style="font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">⚡</div>
+                    <div>
+                        <h3 style="color: var(--python-blue); margin: 0; font-size: 1.6rem;">Python Engineer Pipeline Output</h3>
+                        <p style="margin: 5px 0 0 0; color: #7f8c8d;">PyKrige 알고리즘 기반 자동화 보간 분석 결과</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.1rem; color: #444; line-height: 1.7; margin-bottom: 40px;">
+                    <code>PyKrige</code> 라이브러리를 활용하여 구현된 수학적 크리깅(Kriging) 결과입니다. 
+                    Meteostat API를 통해 실시간 기상 데이터를 수집하고, 전처리부터 공간 보간 연산 및 시각화까지 전 과정을 자동화하여 도출한 실제 분석 맵입니다.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                    <!-- Result 1 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit01/jan_map.png" alt="January Kriging Map" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">January Max Temperature (Python Kriging)</p>
+                    </div>
+                    <!-- Result 2 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit01/aug_map.png" alt="August Kriging Map" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">August Max Temperature (Python Kriging)</p>
+                    </div>
+                </div>
+
+                <div style="background: #0f1115; padding: 25px; border-radius: 15px; border: 1px solid #2d3436;">
+                    <h4 style="color: #95a5a6; margin-top: 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">⚙️ Execution Summary</h4>
+                    <div style="font-family: 'Fira Code', monospace; color: #2ecc71; font-size: 0.9rem; line-height: 1.5;">
+                        - Data Source: Meteostat API (1991-2020 Normals) + Census place boundary<br>
+                        - Algorithm: Ordinary Kriging (Spherical Model) + IDW comparison<br>
+                        - Output: January/August maps, warm/cool city tables, 7-page PDF<br>
+                        - Automation: Fetch -> Interpolate -> Sample Cities -> Plot -> Build PDF
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 40px; color: #94a3b8; font-size: 0.95rem; border-top: 1px solid #eee;">
+        &copy; 2026 UCLA Extension Advanced GIS - Dual-Track Learning Framework Project
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCLA Advanced GIS: 듀얼트랙 학습 포트폴리오 대시보드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --text-main: #2c3e50;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--text-main) 0%, #34495e 100%);
+            color: var(--white);
+            padding: 80px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        header p {
+            margin: 15px 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+        }
+
+        .dashboard-section {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 30px 40px;
+            font-weight: 800;
+            font-size: 1.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: #fff;
+            border-bottom: 1px solid var(--border-grey);
+            transition: all 0.3s;
+        }
+
+        .section-header:hover {
+            background: #fbfcfd;
+        }
+
+        .section-header::after {
+            content: '▼';
+            font-size: 1rem;
+            color: #bdc3c7;
+            transition: transform 0.3s;
+        }
+
+        .section-header.active::after {
+            transform: rotate(180deg);
+        }
+
+        .list-container {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .list-container.open {
+            display: block;
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 40px;
+        }
+
+        .unit-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: all 0.3s;
+            border: 1px solid var(--border-grey);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--python-blue);
+        }
+
+        .unit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-color: var(--python-blue);
+        }
+
+        .unit-card.pdf::before { background: var(--arcgis-orange); }
+        .unit-card.pdf:hover { border-color: var(--arcgis-orange); }
+
+        .unit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .unit-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .unit-desc {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .btn-action {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--python-blue);
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .pdf .btn-action { background: var(--arcgis-orange); }
+
+        .loading-text {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border-grey);
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            .section-header { padding: 20px; font-size: 1.3rem; }
+            .list-grid { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>UCLA Advanced GIS 듀얼트랙 포트폴리오</h1>
+    <p>실무 숙련도와 엔지니어링 역량의 균형 잡힌 성장 기록</p>
+</header>
+
+<div class="container">
+    
+    <!-- 📚 섹션 1: 학습 가이드 -->
+    <div class="dashboard-section">
+        <div class="section-header active" onclick="toggleSection('guide-list', this)">
+            <span>📚 Unit - Learning Framework (학습 코너)</span>
+        </div>
+        <div id="guide-list" class="list-container open">
+            <div class="list-grid" id="guide-list-grid">
+                <div class="loading-text">데이터를 불러오는 중입니다...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📂 섹션 2: 결과물 포트폴리오 -->
+    <div class="dashboard-section">
+        <div class="section-header active" onclick="toggleSection('portfolio-list', this)">
+            <span>📂 Unit - Portfolio (최종 성과물)</span>
+        </div>
+        <div id="portfolio-list" class="list-container open">
+            <div class="list-grid" id="portfolio-list-grid">
+                <div class="loading-text">데이터를 불러오는 중입니다...</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 UCLA Extension Advanced GIS Dual-Track Portfolio Project
+</footer>
+
+<script>
+    function toggleSection(id, header) {
+        const list = document.getElementById(id);
+        list.classList.toggle('open');
+        header.classList.toggle('active');
+    }
+
+    // 카탈로그 기반 동적 데이터 로딩 로직
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('catalog/catalog.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                const guideGrid = document.getElementById('guide-list-grid');
+                const portfolioGrid = document.getElementById('portfolio-list-grid');
+                
+                guideGrid.innerHTML = '';
+                portfolioGrid.innerHTML = '';
+
+                data.practices.forEach(practice => {
+                    // 학습 가이드 카드 동적 생성
+                    if (practice.pageUrl) {
+                        const guideCard = document.createElement('a');
+                        guideCard.href = practice.pageUrl;
+                        guideCard.className = 'unit-card';
+                        guideCard.innerHTML = `
+                            <span class="unit-icon">${practice.icon}</span>
+                            <h3 class="unit-title">${practice.title}</h3>
+                            <p class="unit-desc">${practice.clientBrief}</p>
+                            <span class="btn-action">학습 가이드 보기</span>
+                        `;
+                        guideGrid.appendChild(guideCard);
+                    }
+
+                    // 포트폴리오 PDF 카드 동적 생성
+                    if (practice.reportUrl) {
+                        const portCard = document.createElement('a');
+                        portCard.href = practice.reportUrl;
+                        portCard.target = '_blank';
+                        portCard.className = 'unit-card pdf';
+                        portCard.innerHTML = `
+                            <span class="unit-icon">📄</span>
+                            <h3 class="unit-title">${practice.reportTitle}</h3>
+                            <p class="unit-desc">${practice.reportDesc}</p>
+                            <span class="btn-action">PDF 리포트 열기</span>
+                        `;
+                        portfolioGrid.appendChild(portCard);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error loading catalog:', error);
+                document.getElementById('guide-list-grid').innerHTML = '<div class="loading-text" style="color:red;">카탈로그 데이터를 불러오는데 실패했습니다.</div>';
+                document.getElementById('portfolio-list-grid').innerHTML = '<div class="loading-text" style="color:red;">카탈로그 데이터를 불러오는데 실패했습니다.</div>';
+            });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>듀얼트랙 GIS 학습 프레임워크 - Unit 03</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --text-main: #2c3e50;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -1px;
+            color: #7f8c8d;
+        }
+
+        header p {
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-top: 10px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .foundation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 50px;
+            border-left: 12px solid #bdc3c7;
+        }
+
+        .foundation-card h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .foundation-card p, .foundation-card ul {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+        }
+
+        .foundation-card ul { list-style: none; padding: 0; }
+        .foundation-card li { margin-bottom: 15px; position: relative; padding-left: 30px; }
+        .foundation-card .icon-pin { position: absolute; left: 0; }
+
+        .dual-track {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .track-card {
+            background: white;
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            min-height: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card.arcgis { border-top: 15px solid var(--arcgis-orange); }
+        .track-card.python { border-top: 15px solid var(--python-blue); }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .track-icon {
+            font-size: 3rem;
+            background: #f1f3f5;
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
+
+        .track-title-group h2 { margin: 0; font-size: 1.8rem; }
+        .arcgis .track-title-group h2 { color: var(--arcgis-orange); }
+        .python .track-title-group h2 { color: var(--python-blue); }
+
+        .track-subtitle { margin: 0; color: #7f8c8d; font-size: 1.1rem; }
+
+        .track-intro {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .concept-box {
+            background: #fff;
+            border: 1px solid #f0f4f8;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .concept-box .label {
+            font-weight: 800;
+            color: #a0aec0;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1rem;
+        }
+
+        .concept-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.3rem;
+            color: #2d3748;
+        }
+
+        .concept-box p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .arcgis .concept-box { border-left-color: var(--arcgis-orange); }
+        .python .concept-box { border-left-color: var(--python-blue); }
+
+        details {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        summary {
+            padding: 25px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .arcgis summary { background: var(--arcgis-orange); color: white; }
+        .python summary { background: var(--python-blue); color: white; }
+
+        summary::after { content: '▼'; font-size: 1rem; }
+        details[open] summary::after { content: '▲'; }
+
+        .details-content {
+            padding: 40px;
+            background: #fff;
+        }
+
+        .step-title {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .arcgis .step-title { color: var(--arcgis-orange); }
+        .python .step-title { color: var(--python-blue); }
+
+        .ui-path {
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .ui-path span { color: #f1c40f; margin: 0 8px; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th { background: #f8f9fa; width: 40%; font-weight: 800; }
+
+        .code-block {
+            background: #0f1115;
+            color: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin-bottom: 35px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid #2d3436;
+        }
+
+        .code-comment { 
+            color: #95a5a6;
+            font-style: italic; 
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .code-keyword { color: #3498db; font-weight: 700; }
+        .code-function { color: #2ecc71; font-weight: 700; }
+        .code-string { color: #f1c40f; }
+        .code-number { color: #e67e22; }
+
+        .mindset-box {
+            margin-top: 40px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 35px;
+            background: #fbfcfd;
+        }
+
+        .mindset-box h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindset-box ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mindset-box li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .mindset-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .dual-track { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav style="background-color: var(--primary-bg); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-grey);">
+    <a href="index.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">🏠 Dashboard</a>
+    <a href="unit01.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 01</a>
+    <a href="unit02.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 02</a>
+    <a href="unit03.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 1; border-bottom: 2px solid var(--python-blue);">Unit 03</a>
+    <a href="unit04.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 04</a>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>듀얼트랙 GIS 학습 프레임워크</h1>
+        <p>Unit 03: 가시권 분석 (Viewshed Analysis)</p>
+    </header>
+
+    <section class="foundation-card">
+        <h2>🌏 1. 기본 개념 (공통 목표)</h2>
+        <ul>
+            <li><span class="icon-pin">📌</span> <b>해결 과제:</b> 울퉁불퉁한 지형 위에서 특정 관측 지점(셀 타워)에 섰을 때 눈으로 볼 수 있는 영역(가시권)을 파악합니다. 이를 통해 T-Mobile 통신 기지국의 무선 주파수가 지형에 막히지 않고 도달할 수 있는 커버리지 영역을 모델링합니다.</li>
+            <li><span class="icon-pin">📌</span> <b>필요한 데이터:</b>
+                <br>&nbsp;&nbsp;&nbsp;- 지형의 높낮이를 담은 고도 데이터 ( DEM : 1-arc-second 고해상도 이미지 데이터).
+                <br>&nbsp;&nbsp;&nbsp;- 관측 지점 데이터 (셀 타워의 위치 좌표, 타워 높이).
+            </li>
+            <li><span class="icon-pin">📌</span> <b>핵심 공간 개념:</b>
+                <br>&nbsp;&nbsp;&nbsp;- <b>가시선 (LOS, Line of Sight):</b> 타워 꼭대기에서 지면의 특정 픽셀까지 장애물 없이 이어지는 직선.
+                <br>&nbsp;&nbsp;&nbsp;- <b>매개변수 약속:</b> 분석을 위해 타워의 높이, 송신 최대 반경(25km), 사람의 휴대전화 높이(지면에서 1.5m) 등 현실의 물리법칙을 데이터화.
+            </li>
+        </ul>
+    </section>
+
+    <div class="dual-track">
+        <!-- ArcGIS Track -->
+        <div class="track-card arcgis">
+            <div class="track-header">
+                <div class="track-icon">🖱️</div>
+                <div class="track-title-group">
+                    <h2>ArcGIS Pro 구현</h2>
+                    <p class="track-subtitle">도구 숙련자 및 오퍼레이터 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">ArcGIS 워크플로우는 래스터 데이터를 처리하기 위한 전용 유료 도구 상자인 <b>Spatial Analyst</b> 익스텐션을 활용합니다. 아래는 개념적인 작업 흐름입니다.</p>
+
+            <div class="concept-box">
+                <span class="label">개념 1</span>
+                <h3>래스터 준비 (모자이크 처리)</h3>
+                <p>여러 장의 DEM(지형 고도 데이터) 타일을 하나의 거대한 지형 이미지로 합칩니다. 이때 각 파일의 좌표계(Spatial Reference)가 동일한지 일일이 확인해야 오류가 나지 않습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">개념 2</span>
+                <h3>속성 테이블 조작 (필드 매핑)</h3>
+                <p>가시권 분석 도구가 인식할 수 있도록 약속된 이름(하드코딩된 필드명)으로 데이터 표를 수정해야 합니다. 예를 들어 타워 높이는 무조건 <code style="color:var(--arcgis-orange); font-weight:bold;">OFFSETA</code> 라는 이름의 기둥(Column)에 적혀 있어야 컴퓨터가 알아먹습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">개념 3</span>
+                <h3>가시권 도구 실행</h3>
+                <p>도구를 실행하면 컴퓨터가 DEM 이미지의 수많은 픽셀을 스캔하며 타워와 픽셀 사이의 시야를 가리는 장애물이 있는지 수학적으로 검사합니다.</p>
+            </div>
+
+            <details>
+                <summary>🛠️ ArcGIS Pro 실전 운용 매뉴얼 (클릭 전개)</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식창조자가 되기 위한 필수 관문: 도구 숙련도를 증명하기 위한 단계별 버튼 클릭 가이드 (계산기 매뉴얼 방식)</p>
+                    
+                    <span class="step-title">[Step 1] 지형 데이터 병합 (Mosaic To New Raster)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> 검색: Mosaic To New Raster</span>
+                    <table>
+                        <tr><th>Input Rasters</th><td>다운로드한 DEM 타일 파일 모두 선택</td></tr>
+                        <tr><th>Output Location</th><td>프로젝트의 기본 Geodatabase 폴더 선택</td></tr>
+                        <tr><th>Raster Dataset Name with Extension</th><td>LA_County_DEM 입력</td></tr>
+                        <tr><th>Spatial Reference for Raster</th><td>NAD 1983 UTM Zone 11N (프로젝트 좌표계와 일치)</td></tr>
+                        <tr><th>Pixel Type</th><td>16_BIT_SIGNED (또는 원본과 동일하게)</td></tr>
+                        <tr><th>Number of Bands</th><td>1 입력</td></tr>
+                    </table>
+                    <p style="margin-top:-15px; margin-bottom:30px; font-size:0.95rem;">→ 하단의 [Run] 버튼을 클릭하여 실행합니다.</p>
+
+                    <span class="step-title">[Step 2] 타워 속성 테이블 하드코딩 설정</span>
+                    <span class="ui-path">Contents 창 <span>▶</span> T-Mobile 포인트 레이어 우클릭 <span>▶</span> Attribute Table 열기</span>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px;">뷰쉐드 도구가 인식하는 약속된 매개변수 필드를 수동으로 생성해야 합니다.<br>테이블 상단의 [Add Field] 버튼을 눌러 다음 필드들을 생성합니다.</p>
+                    <table>
+                        <tr><th>OFFSETA (관측자 높이)</th><td>타워의 높이 (Calculate Field를 통해 기존 타워 높이 데이터를 이 열로 복사)</td></tr>
+                        <tr><th>OFFSETB (대상 물체 높이)</th><td>사람이 핸드폰을 들고 있는 높이 (1.5 미터 일괄 입력)</td></tr>
+                        <tr><th>RADIUS2 (최대 도달 반경)</th><td>전파 최대 도달 거리 25km (미터 단위이므로 25000 일괄 입력)</td></tr>
+                    </table>
+                    <p style="margin-top:-15px; margin-bottom:30px; font-size:0.95rem;">→ 리본 메뉴의 [Save]를 눌러 필드 구성을 저장합니다.</p>
+
+                    <span class="step-title">[Step 3] 가시권 분석 도구 실행 (Viewshed)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> 검색: Viewshed (Spatial Analyst)</span>
+                    <table>
+                        <tr><th>Input raster</th><td>LA_County_DEM (Step 1에서 만든 통합 지형 파일)</td></tr>
+                        <tr><th>Input point or polyline observer features</th><td>T_Mobile_Towers (Step 2에서 수정한 타워 파일)</td></tr>
+                        <tr><th>Output raster</th><td>Coverage_Result_Raster</td></tr>
+                        <tr><th>Z factor</th><td>1 (고도와 평면의 단위가 모두 미터(m)로 같을 경우)</td></tr>
+                    </table>
+                    <p style="margin-top:-15px; font-size:0.95rem;">→ [Run] 버튼을 클릭합니다. 타워 개수와 해상도에 따라 수십 분~수 시간이 소요될 수 있습니다.</p>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧐 오퍼레이터의 마인드셋</h4>
+                <ul>
+                    <li>"여러 개의 DEM 타일을 하나로 합치기 전에 모든 파일의 투영법(좌표계)이 제대로 일치하는 상태인가?"</li>
+                    <li>"도구가 높이 값을 제대로 읽어갈 수 있도록 <code style="color:var(--arcgis-orange); font-weight:bold;">OFFSETA</code> 라는 속성 필드 이름을 한 글자도 틀리지 않고 정확히 입력했는가?"</li>
+                    <li>"클릭 한 번 했을 뿐인데, 왜 이 도구는 내 컴퓨터에서 끝날 기미를 보이지 않고 45분째 돌아가고만 있을까?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Python Track -->
+        <div class="track-card python">
+            <div class="track-header">
+                <div class="track-icon">💻</div>
+                <div class="track-title-group">
+                    <h2>Python 로직 및 아키텍처</h2>
+                    <p class="track-subtitle">지식 창조자 및 GIS 엔지니어 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">파이썬 프로그래밍 방식은 고성능 래스터 처리를 위해 <b>GDAL</b>과 <b>rasterio</b>를 직접 다루며, 컴퓨터의 모든 두뇌(CPU 코어)를 동시에 사용하게 만드는 아키텍처 최적화에 집중합니다. 최종 PDF는 검증된 <code>coverage_results.csv</code> 값을 기준으로 다시 생성되어, HTML 차트와 PDF 표의 시나리오 수치가 일치합니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>프로그래밍 방식 래스터 처리</h3>
+                <p>래스터(격자 이미지) 데이터를 읽고 쓰는 파이썬 도구 상자인 <b>rasterio</b> 라이브러리를 사용합니다. ArcGIS처럼 수동으로 도구를 실행해 파일을 저장하는 대신, 코드 안에서 <code style="color:var(--python-blue); font-weight:bold;">rasterio.merge</code> 라는 함수(명령어)를 호출하여 여러 장의 DEM 데이터 배열(Array)을 컴퓨터 메모리 위에서 즉시 동적으로 이어 붙입니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>알고리즘적 가시권 계산</h3>
+                <p>ArcGIS의 무거운 UI 창을 통하지 않고, 파이썬 코드에서 gdal 라이브러리 모듈을 불러온 뒤 <code style="color:var(--python-blue); font-weight:bold;">ViewshedGenerate</code> 라는 함수(가시권을 계산하는 핵심 로직)를 직접 실행합니다. 속성 테이블에 이름을 바꿔 적는 번거로운 짓을 할 필요가 없습니다. 코드에서 이 함수에 <code style="color:var(--python-blue); font-weight:bold;">observer_height=30</code> (관측자 높이 30미터), <code style="color:var(--python-blue); font-weight:bold;">target_height=1.5</code> 처럼 매개변수(인자 값)를 명시적으로 던져주기만 하면 됩니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>시스템 아키텍처 (병렬 처리)</h3>
+                <p>해상도가 매우 높은 DEM 지형 위에서 수백 개의 셀 타워를 한 번에 하나씩 검사하는 것은 엄청나게 느립니다. 파이썬에 내장된 <b>concurrent.futures</b> 모듈 안에서 <b>ProcessPoolExecutor</b> 라는 클래스(작업 반장 역할을 하는 객체 틀)를 불러옵니다. 이 작업 반장에게 지시하여, 거대한 계산 작업들을 여러 개의 뭉치로 쪼갠 뒤 컴퓨터에 있는 여러 개의 CPU 코어(예: 32개 코어)에 골고루 던져주어 "동시에" 계산하게 만듭니다.</p>
+            </div>
+
+            <details>
+                <summary>👨‍💻 Python 코어 로직 해설 (초등 5학년도 이해하는 코드 읽기)</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식 창조자의 무기: "클릭" 대신 컴퓨터의 두뇌와 직접 소통하는 방법. 파이썬 문법을 몰라도, 회색으로 적힌 한글 해설을 읽어보며 코드가 어떻게 흐르는지 감을 잡아보세요!</p>
+
+                    <span class="step-title">[핵심 로직 0] 여러 장의 지형 래스터 데이터를 하나로 합치기 (모자이크)</span>
+                    <p style="font-size:1.05rem; margin-bottom:15px; color:#444;">ArcGIS에서 마우스로 파일들을 하나씩 골라서 도구를 실행했던 그 작업을, 파이썬에서는 rasterio 라이브러리를 통해 동적으로 메모리 위에서 이어 붙입니다.</p>
+                    <div class="code-block">
+<span class="code-comment"># 여러 장의 DEM 파일을 담아둘 빈 리스트를 준비합니다.</span>
+src_files_to_mosaic = []
+
+<span class="code-comment"># 폴더에 있는 파일(DEM_TILES)을 하나씩 꺼내면서 반복합니다.</span>
+<span class="code-keyword">for</span> fp <span class="code-keyword">in</span> DEM_TILES:
+    <span class="code-comment"># rasterio 도구를 써서 파일을 열어줍니다.</span>
+    src = rasterio.open(fp)
+    <span class="code-comment"># 열린 파일을 리스트 바구니에 차곡차곡 담습니다.</span>
+    src_files_to_mosaic.append(src)
+
+<span class="code-comment"># 🌟 가장 중요한 마법의 함수! merge 함수가 바구니에 담긴 조각들을 하나의 거대한 지도로 알아서 꿰매줍니다.</span>
+<span class="code-comment"># mosaic에는 하나로 합쳐진 거대한 데이터 배열(Array)이, out_trans에는 좌표 정보가 담깁니다.</span>
+mosaic, out_trans = merge(src_files_to_mosaic)</div>
+
+                    <span class="step-title">[핵심 로직 1] 가시권(Viewshed) 계산 명령 내리기</span>
+                    <p style="font-size:1.05rem; margin-bottom:15px; color:#444;">ArcGIS에서 45분 걸리는 작업을 단 몇 초 만에 끝내기 위해, 컴퓨터 내부의 강력한 지리 연산 엔진(GDAL)을 직접 조종하는 코드입니다.</p>
+                    <div class="code-block">
+<span class="code-comment"># --- 가시권(Viewshed) 분석을 수행하는 핵심 작업 반장 ---</span>
+<span class="code-keyword">def</span> <span class="code-function">run_single_viewshed</span>(args):
+    <span class="code-comment"># args라는 꾸러미에서 필요한 정보(위치, 타워 높이 등)를 하나씩 꺼냅니다.</span>
+    idx, x, y, tower_height, radius, dem_path, out_path = args
+    
+    <span class="code-comment"># gdal이라는 라이브러리(강력한 공간 데이터 도구상자)를 이용해 지형 고도 데이터(DEM)를 엽니다.</span>
+    src_ds = gdal.Open(dem_path)
+    
+    <span class="code-comment"># 고도 데이터의 첫 번째 껍질(Band)을 가져옵니다. (여기에 실제 산과 계곡의 높이 숫자들이 빼곡히 들어있어요)</span>
+    band = src_ds.GetRasterBand(<span class="code-number">1</span>)
+    
+    <span class="code-comment"># 관측자(타워)의 높이는 아까 꺼낸 'tower_height' 숫자를 씁니다.</span>
+    observer_height = tower_height
+    <span class="code-comment"># 목표물(사람)의 핸드폰 높이는 땅에서 1.5미터라고 정해줍니다.</span>
+    target_height = <span class="code-number">1.5</span>
+    
+    <span class="code-comment"># 🌟 가장 중요한 순간! GDAL 엔진에게 가시권(Viewshed)을 계산하라고 직접 명령합니다.</span>
+    gdal.ViewshedGenerate(
+        band, <span class="code-string">"GTiff"</span>, out_path, [<span class="code-string">"COMPRESS=LZW"</span>], <span class="code-comment"># 어떤 그림 파일로 예쁘게 압축해서 저장할지 설정</span>
+        x, y, observer_height, target_height,      <span class="code-comment"># 타워의 위치(x,y)와 관측자/목표물 높이 정보 전달</span>
+        <span class="code-number">1</span>, <span class="code-number">0</span>, <span class="code-number">0</span>, -<span class="code-number">9999</span>,                            <span class="code-comment"># 보이는 곳은 1, 안 보이는 곳은 0으로 색칠하라는 수학적 약속</span>
+        <span class="code-number">0.85714</span>, <span class="code-number">2</span>, radius                         <span class="code-comment"># 지구는 둥그니까 곡률을 계산에 넣고, 최대 탐색 거리(radius)를 알려줌</span>
+    )
+    
+    <span class="code-comment"># 계산이 끝났으니 열어두었던 지형 데이터 파일을 닫습니다. (컴퓨터 메모리 정리정돈)</span>
+    src_ds = <span class="code-keyword">None</span>
+    
+    <span class="code-comment"># 완성된 결과 파일의 이름을 메인 프로그램으로 반환(보고)합니다.</span>
+    <span class="code-keyword">return</span> out_path</div>
+
+                    <span class="step-title">[핵심 로직 2] 수백 개의 타워를 32개 코어로 동시(병렬) 처리하기</span>
+                    <p style="font-size:1.05rem; margin-bottom:15px; color:#444;">파이썬의 진정한 마법입니다. 한 번에 하나씩 1시간 넘게 걸려서 계산하지 않고, 컴퓨터의 모든 두뇌를 동시에 깨워서 일하게 만듭니다.</p>
+                    <div class="code-block">
+    <span class="code-comment"># 빈 리스트(결과 파일 이름들을 담아둘 빈 바구니)를 만듭니다.</span>
+    generated_tifs = []
+    
+    <span class="code-comment"># 컴퓨터에 있는 모든 두뇌(CPU 코어, 예를 들어 32개)를 전부 동원하는 총감독(ProcessPoolExecutor)을 부릅니다!</span>
+    <span class="code-keyword">with</span> ProcessPoolExecutor(max_workers=os.cpu_count()) <span class="code-keyword">as</span> executor:
+        
+        <span class="code-comment"># 수백 개의 타워 위치(tasks)를 32개의 두뇌에게 골고루 나눠주고 동시에 '위의 가시권 계산'을 시작(map)합니다!</span>
+        <span class="code-keyword">for</span> res <span class="code-keyword">in</span> executor.map(run_single_viewshed, tasks):
+            
+            <span class="code-comment"># 두뇌들이 각자 계산을 마칠 때마다, 완성된 결과 파일 이름을 바구니에 하나씩 차곡차곡 담습니다.</span>
+            generated_tifs.append(res)</div>
+
+                    <span class="step-title">[핵심 로직 3] PDF 보고서 자동 생성 (ReportLab)</span>
+                    <p style="font-size:1.05rem; margin-bottom:15px; color:#444;">계산이 모두 끝나면, 파이썬이 사람을 대신해 결과 지도와 표를 예쁘게 배치하여 PDF 보고서를 스스로 찍어냅니다. 이번 정리에서는 검증된 CSV를 다시 읽어 차트와 PDF 표가 같은 숫자를 쓰도록 고정했습니다.</p>
+                    <div class="code-block"><span class="code-comment"># 글씨를 쓰고 그림을 붙이는 '리포트랩' 도구를 불러옵니다.</span>
+<span class="code-keyword">from</span> reportlab.platypus <span class="code-keyword">import</span> SimpleDocTemplate, Paragraph, Image, Table
+
+<span class="code-comment"># 1. 새 하얀 도화지(PDF 파일)를 준비합니다.</span>
+doc = SimpleDocTemplate(pdf_path, pagesize=letter)
+elements = [] <span class="code-comment"># 도화지에 올릴 내용물들을 순서대로 담을 빈 바구니</span>
+
+<span class="code-comment"># 2. 바구니에 큰 제목(Paragraph)과 아까 만든 커버리지 지도(Image)를 차곡차곡 담습니다.</span>
+elements.append(Paragraph(<span class="code-string">"T-Mobile Network Coverage Analysis: LA County"</span>, title_style))
+elements.append(Image(maps[<span class="code-string">'status_quo'</span>], width=<span class="code-number">500</span>, height=<span class="code-number">400</span>))
+
+<span class="code-comment"># 3. 마지막으로 바구니에 담긴 내용물들을 도화지에 한 번에 도장 찍듯 찍어내어 PDF를 완성합니다! (Build)</span>
+doc.build(elements)</div>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧠 지식 창조자의 마인드셋</h4>
+                <ul>
+                    <li>"수백만 개의 픽셀을 가진 무거운 지형 데이터를 즉시 처리하기 위해, 컴퓨터의 여러 CPU 코어를 동시에 부려먹는 '병렬 처리'를 어떻게 코드로 구현할 수 있을까?"</li>
+                    <li>"내가 직접 호출한 GDAL 라이브러리의 레이 트레이싱 알고리즘은 데이터를 처리하는 데 시간이 얼마나 걸리는가?"</li>
+                    <li>"우리가 작성한 파이썬 배열(Array) 데이터가 가장 밑단에서 초고속으로 돌아가는 C++ 기반의 엔진(GDAL)으로 어떻게 전달되어 계산되는가?"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="foundation-card" style="margin-top: 80px; border-left: 12px solid var(--python-blue);">
+        <h2 style="color: var(--python-blue); display: flex; align-items: center; gap: 15px;">
+            <span style="font-size: 2.5rem;">🎓</span> Final Results & Portfolio
+        </h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 60px; margin-top: 40px;">
+            
+            <!-- 💻 Track 2: Python Engineer Pipeline Output -->
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 20px; border-left: 10px solid var(--python-blue); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
+                    <div style="font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">⚡</div>
+                    <div>
+                        <h3 style="color: var(--python-blue); margin: 0; font-size: 1.6rem;">Python Engineer Pipeline Output</h3>
+                        <p style="margin: 5px 0 0 0; color: #7f8c8d;">병렬 처리 및 알고리즘 최적화 파이프라인 결과물</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.1rem; color: #444; line-height: 1.7; margin-bottom: 40px;">
+                    GDAL 엔진과 <code>concurrent.futures</code>를 활용한 고성능 가시권 계산 결과입니다. 
+                    30m 해상도 DEM을 사용하여 정밀도를 높였으며, 시나리오 분석을 통해 최적의 기지국 위치를 제안하는 고급 엔지니어링 리포트입니다.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                    <!-- Result 1 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit03/comparison_chart.png" alt="Coverage Comparison Chart" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">T-Mobile Coverage Comparison Chart</p>
+                    </div>
+                    <!-- Result 2 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit03/map_status_quo.png" alt="Status Quo Viewshed Map" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Python-Generated Viewshed Map (Status Quo)</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <a href="reports/unit03/TMobile_Coverage_Report_Python.pdf" target="_blank" 
+                       style="display: inline-block; padding: 18px 40px; background: var(--python-blue); color: white; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 10px 20px rgba(0, 112, 192, 0.2);">
+                        View Full Python Report (PDF)
+                    </a>
+                </div>
+
+                <div style="background: #0f1115; padding: 30px; border-radius: 15px; border: 1px solid #2d3436;">
+                    <h4 style="color: #95a5a6; margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">📊 Pipeline Performance Logs</h4>
+                    <div style="font-family: 'Fira Code', monospace; color: #2ecc71; font-size: 0.95rem; line-height: 1.6;">
+                        <span style="color: #95a5a6;">[INFO]</span> Verified coverage_results.csv loaded as canonical result table<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Status Quo: 40.08% coverage<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Scenario A (+10m Height): 40.72% coverage<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Scenario B (+5km Range): 42.58% coverage<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Scenario C (3 New Towers): 44.31% coverage<br>
+                        <span style="color: #95a5a6;">[INFO]</span> 4-page PDF report regenerated from verified maps and CSV.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 40px; color: #94a3b8; font-size: 0.95rem; border-top: 1px solid #eee;">
+        &copy; 2026 UCLA Extension Advanced GIS - Dual-Track Learning Framework Project
+    </footer>
+</div>
+
+</body>
+</html>

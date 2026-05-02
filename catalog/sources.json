@@ -1,0 +1,29 @@
+[
+  {
+    "id": "ucla-advanced-gis",
+    "name": "UCLA Extension Advanced GIS (GEOG XL 181B)",
+    "provider": "UCLA Extension",
+    "url": "https://www.uclaextension.edu/",
+    "license": "Private Course Material",
+    "status": "active",
+    "notes": "Original course materials. Do not publish raw data or assignment PDFs."
+  },
+  {
+    "id": "esri-learn",
+    "name": "Esri Learn ArcGIS",
+    "provider": "Esri",
+    "url": "https://learn.arcgis.com/en/projects/",
+    "license": "Public Tutorials",
+    "status": "active",
+    "notes": "Excellent source for scenario-based practices."
+  },
+  {
+    "id": "helsinki-autogis",
+    "name": "Automating GIS Processes",
+    "provider": "University of Helsinki",
+    "url": "https://autogis-site.readthedocs.io/",
+    "license": "Creative Commons Attribution-ShareAlike 4.0",
+    "status": "active",
+    "notes": "Good for advanced Python network and raster analysis."
+  }
+]

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>듀얼트랙 GIS 학습 프레임워크 - Unit 02</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --text-main: #2c3e50;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -1px;
+            color: #7f8c8d;
+        }
+
+        header p {
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-top: 10px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .foundation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 50px;
+            border-left: 12px solid #bdc3c7;
+        }
+
+        .foundation-card h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .foundation-card p, .foundation-card ul {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+        }
+
+        .foundation-card ul { list-style: none; padding: 0; }
+        .foundation-card li { margin-bottom: 15px; position: relative; padding-left: 30px; }
+        .foundation-card .icon-pin { position: absolute; left: 0; }
+
+        .dual-track {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .track-card {
+            background: white;
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: var(--card-shadow);
+            min-height: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card.arcgis { border-top: 15px solid var(--arcgis-orange); }
+        .track-card.python { border-top: 15px solid var(--python-blue); }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .track-icon {
+            font-size: 3rem;
+            background: #f1f3f5;
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
+
+        .track-title-group h2 { margin: 0; font-size: 1.8rem; }
+        .arcgis .track-title-group h2 { color: var(--arcgis-orange); }
+        .python .track-title-group h2 { color: var(--python-blue); }
+
+        .track-subtitle { margin: 0; color: #7f8c8d; font-size: 1.1rem; }
+
+        .track-intro {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .concept-box {
+            background: #fff;
+            border: 1px solid #f0f4f8;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .concept-box .label {
+            font-weight: 800;
+            color: #a0aec0;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1rem;
+        }
+
+        .concept-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.3rem;
+            color: #2d3748;
+        }
+
+        .concept-box p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .arcgis .concept-box { border-left-color: var(--arcgis-orange); }
+        .python .concept-box { border-left-color: var(--python-blue); }
+
+        details {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        summary {
+            padding: 25px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .arcgis summary { background: var(--arcgis-orange); color: white; }
+        .python summary { background: var(--python-blue); color: white; }
+
+        summary::after { content: '▼'; font-size: 1rem; }
+        details[open] summary::after { content: '▲'; }
+
+        .details-content {
+            padding: 40px;
+            background: #fff;
+        }
+
+        .step-title {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .arcgis .step-title { color: var(--arcgis-orange); }
+        .python .step-title { color: var(--python-blue); }
+
+        .ui-path {
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .ui-path span { color: #f1c40f; margin: 0 8px; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th { background: #f8f9fa; width: 40%; font-weight: 800; }
+
+        .code-block {
+            background: #0f1115;
+            color: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin-bottom: 35px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid #2d3436;
+        }
+
+        .code-comment { 
+            color: #95a5a6;
+            font-style: italic; 
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .code-keyword { color: #3498db; font-weight: 700; }
+        .code-function { color: #2ecc71; font-weight: 700; }
+        .code-string { color: #f1c40f; }
+        .code-number { color: #e67e22; }
+
+        .mindset-box {
+            margin-top: 40px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 35px;
+            background: #fbfcfd;
+        }
+
+        .mindset-box h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindset-box ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mindset-box li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .mindset-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .dual-track { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav style="background-color: var(--primary-bg); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-grey);">
+    <a href="index.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">🏠 Dashboard</a>
+    <a href="unit01.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 01</a>
+    <a href="unit02.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 1; border-bottom: 2px solid var(--python-blue);">Unit 02</a>
+    <a href="unit03.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 03</a>
+    <a href="unit04.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 04</a>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>듀얼트랙 GIS 학습 프레임워크</h1>
+        <p>Unit 02: 네트워크 분석 및 상권 평가 (Network Analysis & Market Research)</p>
+    </header>
+
+    <section class="foundation-card">
+        <h2>🌏 1. 기본 개념 (공통 목표)</h2>
+        <ul>
+            <li><span class="icon-pin">📌</span> <b>해결 과제:</b> 단순히 직선거리가 아니라, 사람들이 이동하는 '도로망'을 따라 이동 시간과 접근성을 분석합니다. 이를 통해 스타벅스 매장의 서비스 영역(상권)을 평가하고, 상권 내 인구수를 집계하여 폐점 여부를 결정합니다.</li>
+            <li><span class="icon-pin">📌</span> <b>필요한 데이터:</b>
+                <br>&nbsp;&nbsp;&nbsp;- <b>도로 네트워크:</b> 교차로(Node)와 도로(Edge) 정보가 담긴 데이터.
+                <br>&nbsp;&nbsp;&nbsp;- <b>시설 위치:</b> 분석의 기점이 되는 스타벅스 매장 위치(Point).
+                <br>&nbsp;&nbsp;&nbsp;- <b>인구 통계:</b> 상권 내 인구수를 계산하기 위한 행정 구역(Polygon) 데이터.
+            </li>
+            <li><span class="icon-pin">📌</span> <b>핵심 공간 개념:</b>
+                <br>&nbsp;&nbsp;&nbsp;- <b>네트워크 위상:</b> 도로와 교차로가 어떻게 서로 연결되어 있는지(연결성 규칙)에 대한 구조.
+                <br>&nbsp;&nbsp;&nbsp;- <b>다익스트라 알고리즘:</b> 미로에서 가장 빠른 길을 찾는 것처럼, 목적지까지 최단 시간 경로를 찾는 탐색 방법.
+                <br>&nbsp;&nbsp;&nbsp;- <b>등시선 (Isochrones):</b> "출발지에서 차로 3분 안에 도착할 수 있는 모든 곳"을 이어 만든 서비스 구역.
+            </li>
+        </ul>
+    </section>
+
+    <div class="dual-track">
+        <!-- ArcGIS Track -->
+        <div class="track-card arcgis">
+            <div class="track-header">
+                <div class="track-icon">🖱️</div>
+                <div class="track-title-group">
+                    <h2>ArcGIS Pro 구현</h2>
+                    <p class="track-subtitle">도구 숙련자 및 오퍼레이터 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">ArcGIS 워크플로우는 <b>Network Analyst</b> 기능을 사용하여 도로 데이터를 '살아있는 네트워크'로 만드는 설정에 집중합니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>네트워크 데이터셋 구축</h3>
+                <p>단순한 선 데이터를 길 찾기가 가능한 도로 데이터로 변환합니다. 일방통행, 제한 속도 등을 마법사 창에서 일일이 설정합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>서비스 지역 솔버 (Solver)</h3>
+                <p>스타벅스 위치를 등록하고 '3분'이라는 시간 한계를 입력한 뒤, 도로를 따라 퍼져나가는 등시선을 생성합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>공간 결합 (Spatial Join)</h3>
+                <p>상권 영역과 인구 통계 블록을 포개어, 상권 내에 거주하는 고객수를 테이블로 합산해 냅니다.</p>
+            </div>
+
+            <details>
+                <summary>🛠️ ArcGIS Pro 실전 운용 매뉴얼</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 오퍼레이터의 필수 관문: 단계별 버튼 클릭 가이드</p>
+                    
+                    <span class="step-title">[1단계] 네트워크 데이터셋 구축</span>
+                    <span class="ui-path">데이터 우클릭 <span>▶</span> New Network Dataset</span>
+                    <p>마법사를 통해 도로의 연결성과 주행 시간(Minutes) 비용을 설정합니다.</p>
+
+                    <span class="step-title">[2단계] 서비스 영역 분석 실행</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Network Analysis <span>▶</span> Service Area</span>
+                    <table>
+                        <tr><th>Facilities</th><td>스타벅스 점 데이터 로드</td></tr>
+                        <tr><th>Cutoffs</th><td>'3' (분) 입력</td></tr>
+                        <tr><th>Travel Mode</th><td>Driving Time 선택</td></tr>
+                    </table>
+
+                    <span class="step-title">[3단계] 배후지 인구 집계</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> Spatial Join</span>
+                    <table>
+                        <tr><th>Target / Join Features</th><td>생성된 상권 / 인구 통계 데이터</td></tr>
+                        <tr><th>Field Map</th><td>인구수 필드를 'Sum(합계)'으로 설정</td></tr>
+                    </table>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧐 오퍼레이터의 마인드셋</h4>
+                <ul>
+                    <li>"유료 라이선스가 활성화되어 있는가? 온라인 크레딧은 충분한가?"</li>
+                    <li>"설정 탭 속에서 도로 규칙들을 빠짐없이 입력했는가?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Python Track -->
+        <div class="track-card python">
+            <div class="track-header">
+                <div class="track-icon">💻</div>
+                <div class="track-title-group">
+                    <h2>Python 로직 및 아키텍처</h2>
+                    <p class="track-subtitle">지식 창조자 및 GIS 엔지니어 양성</p>
+                </div>
+            </div>
+
+            <p class="track-intro">파이썬 방식은 그래프 이론을 바탕으로 도로망을 점과 선의 수학적 모델로 변환하여 메모리에서 직접 계산합니다. 이번 실행에서는 캐시된 Riverside 운전 도로망, Starbucks 점 자료, ACS block group 자료를 사용해 3분 상권과 폐점 후보, 대체 매장 이동시간을 다시 계산했습니다.</p>
+
+            <div class="concept-box">
+                <span class="label">Step 1</span>
+                <h3>오픈 소스 그래프 생성 (OSMnx)</h3>
+                <p><code>OSMnx</code> 라이브러리를 사용하여 OpenStreetMap에서 도시의 모든 도로와 교차로를 수학적 '그래프' 구조로 불러옵니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 2</span>
+                <h3>알고리즘적 경로 탐색 (NetworkX)</h3>
+                <p>표준 라이브러리인 <code>networkx</code>의 다익스트라 알고리즘을 호출하여 이동 시간이 3분 이내인 모든 지점을 탐색합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">Step 3</span>
+                <h3>메모리 기반 상권 생성 및 집계</h3>
+                <p><code>Shapely</code>로 점들을 감싸는 다각형을 만들고 <code>GeoPandas</code>로 인구수를 즉시 집계하는 파이프라인을 설계합니다.</p>
+            </div>
+
+            <details>
+                <summary>👨‍💻 Python 코어 로직 해설</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식 창조자의 무기: 유료 도구 없이 수학으로 상권을 직접 설계하는 법.</p>
+
+                    <span class="step-title">[핵심 로직 1] OSMnx를 이용한 도로망 그래프 구축</span>
+                    <div class="code-block">
+<span class="code-keyword">import</span> osmnx <span class="code-keyword">as</span> ox
+
+<span class="code-comment"># 1. 특정 지역(리버사이드)의 도로망 데이터를 그래프 형태로 가져옵니다.</span>
+G = ox.graph_from_place(<span class="code-string">"Riverside, CA, USA"</span>, network_type=<span class="code-string">"drive"</span>)
+
+<span class="code-comment"># 2. 도로의 제한 속도를 바탕으로 각 도로를 지나는 '시간'을 계산하여 가중치로 넣습니다.</span>
+G = ox.add_edge_speeds(G)
+G = ox.add_edge_travel_times(G)</div>
+
+                    <span class="step-title">[핵심 로직 2] 다익스트라 알고리즘 기반 상권 탐색</span>
+                    <div class="code-block">
+<span class="code-keyword">import</span> networkx <span class="code-keyword">as</span> nx
+
+<span class="code-comment"># 1. 'ego_graph' 명령어로 특정 스타벅스에서 3분 이내의 도로망만 뽑아냅니다.</span>
+sub_g = nx.ego_graph(G, center_node, radius=<span class="code-number">180</span>, distance=<span class="code-string">'travel_time'</span>)
+
+<span class="code-comment"># 2. 찾아낸 점들을 하나로 모아 'convex_hull' 알고리즘으로 감싸 상권을 그립니다.</span>
+<span class="code-keyword">from</span> shapely.geometry <span class="code-keyword">import</span> MultiPoint
+service_area = MultiPoint(node_points).convex_hull</div>
+
+                    <span class="step-title">[핵심 로직 3] 인구 통계 공간 결합 (Spatial Join)</span>
+                    <div class="code-block">
+<span class="code-keyword">import</span> geopandas <span class="code-keyword">as</span> gpd
+
+<span class="code-comment"># 1. 만들어진 3분 상권 영역(Polygon) 안에 미국 인구 조사(ACS) 통계 블록의 중심점을 포갭니다.</span>
+joined = gpd.sjoin(bg_centroids, isochrones, how=<span class="code-string">"inner"</span>, predicate=<span class="code-string">"within"</span>)
+
+<span class="code-comment"># 2. 각 스타벅스 매장(Store_ID)별로 포개어진 통계 블록의 총 인구수(Total_Pop)를 모두 합산합니다.</span>
+pop_summary = joined.groupby(<span class="code-string">'Store_ID'</span>)[<span class="code-string">'Total_Pop'</span>].sum()</div>
+
+                    <span class="step-title">[핵심 로직 4] 목적지 비용 매트릭스 (OD Matrix) 생성</span>
+                    <div class="code-block">
+<span class="code-comment"># 폐점이 결정된 매장에서 다른 모든 스타벅스 지점까지 도로를 따라 걸리는 시간을 구합니다.</span>
+lengths = nx.single_source_dijkstra_path_length(G, closed_node, weight=<span class="code-string">'travel_time'</span>)
+
+<span class="code-comment"># 결과를 분 단위로 환산하고 가장 가까운 대체 매장 순으로 정렬합니다.</span>
+travel_time_mins = lengths[dest_node] / <span class="code-number">60.0</span></div>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧠 지식 창조자의 마인드셋</h4>
+                <ul>
+                    <li>"내 컴퓨터의 메모리만으로 수백 개의 매장을 어떻게 자동 분석할 수 있을까?"</li>
+                    <li>"실제 도로망이 노드(V)와 간선(E)으로 이루어진 수학적 그래프 모델로 어떻게 추상화되는가?"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="foundation-card" style="margin-top: 80px; border-left: 12px solid var(--python-blue);">
+        <h2 style="color: var(--python-blue); display: flex; align-items: center; gap: 15px;">
+            <span style="font-size: 2.5rem;">🎓</span> Final Results & Portfolio
+        </h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 60px; margin-top: 40px;">
+            
+            <!-- 💻 Track 2: Python Engineer Pipeline Output -->
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 20px; border-left: 10px solid var(--python-blue); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
+                    <div style="font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">⚡</div>
+                    <div>
+                        <h3 style="color: var(--python-blue); margin: 0; font-size: 1.6rem;">Python Engineer Pipeline Output</h3>
+                        <p style="margin: 5px 0 0 0; color: #7f8c8d;">OSMnx 그래프 이론 기반 상권 자동 분석 결과물</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.1rem; color: #444; line-height: 1.7; margin-bottom: 40px;">
+                    <code>OSMnx</code>와 <code>NetworkX</code>를 활용하여 구현된 그래프 기반 상권 분석 결과입니다. 
+                    오픈 소스 데이터만으로 수백 개 매장의 접근성을 동시에 계산하고 최적의 폐점 전략을 제안합니다.
+                </p>
+
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <a href="reports/unit02/California_Starbucks_Network_Analysis_Python.pdf" target="_blank" 
+                       style="display: inline-block; padding: 18px 40px; background: var(--python-blue); color: white; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 10px 20px rgba(0, 112, 192, 0.2);">
+                        View Python Generated Report (PDF)
+                    </a>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                    <!-- Result 1 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center; min-height: 300px; display: flex; flex-direction: column; justify-content: center;">
+                        <img src="reports/unit02/all_service_areas.png" alt="Starbucks Service Area Map" style="width: 100%; border-radius: 10px; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="display: none; padding: 40px; background: #f1f3f5; border-radius: 10px; color: #adb5bd;">
+                            <p style="font-size: 3rem; margin: 0;">🗺️</p>
+                            <p>Service Area Map Placeholder<br><small>(Run unit02_final_report_generator.py to generate)</small></p>
+                        </div>
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Python-Generated Starbucks Service Areas</p>
+                    </div>
+                    <!-- Result 2 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center; min-height: 300px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="padding: 40px; background: #f8f9fa; border-radius: 10px; border: 1px dashed #cbd5e0;">
+                            <table style="font-size: 0.8rem; margin: 0 auto; background: white;">
+                                <thead><tr><th>Store ID</th><th>Catchment Pop</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr style="background: #fff5f5;"><td>VONS #2659 - STARBUCKS</td><td>6,927</td><td>Recommended Closure</td></tr>
+                                    <tr><td>STARBUCKS #11463</td><td>8,057</td><td>Review</td></tr>
+                                    <tr><td>STARBUCKS #6616</td><td>8,095</td><td>Review</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Store Closure Matrix (Automated Decision)</p>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">Nearest alternatives from VONS #2659: Starbucks #5685 (2.05 min), #11025 (3.37 min), #5369 (4.06 min)</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit02/bottom_1_service_area.png" alt="Worst Starbucks Service Area" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Bottom Candidate Map: VONS #2659</p>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit02/od_relocation_links.png" alt="OD Relocation Links" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">OD Relocation Links from Closure Candidate</p>
+                    </div>
+                </div>
+
+                <div style="background: #0f1115; padding: 30px; border-radius: 15px; border: 1px solid #2d3436;">
+                    <h4 style="color: #95a5a6; margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">📊 Pipeline Performance Logs</h4>
+                    <div style="font-family: 'Fira Code', monospace; color: #2ecc71; font-size: 0.95rem; line-height: 1.6;">
+                        <span style="color: #95a5a6;">[INFO]</span> Fetching Street Network for Riverside via OSMnx...<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Cached Riverside drive graph loaded from AIs/data/unit02/riverside_drive.graphml<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Calculating 3-minute Drive-Time Isochrones...<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Performing Spatial Join with ACS Demographics...<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Recommended Closure identified: VONS #2659 - STARBUCKS (6,927 residents; 1.6% share)<br>
+                        <span style="color: #95a5a6;">[INFO]</span> OD matrix exported to od_relocation_matrix.csv
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 40px; color: #94a3b8; font-size: 0.95rem; border-top: 1px solid #eee;">
+        &copy; 2026 UCLA Extension Advanced GIS - Dual-Track Learning Framework Project
+    </footer>
+</div>
+
+</body>
+</html>

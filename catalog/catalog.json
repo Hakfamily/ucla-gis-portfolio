@@ -1,0 +1,229 @@
+{
+  "practices": [
+    {
+      "id": "ucla-unit01",
+      "series": "UCLA Core",
+      "unitNumber": 1,
+      "title": "Unit 01: 공간 보간법",
+      "clientBrief": "미측정 온도 데이터를 지구통계학적으로 추정하여 채워넣는 기법 (Interpolation)",
+      "icon": "🌡️",
+      "status": "published",
+      "difficulty": "beginner",
+      "domain": [
+        "climate",
+        "interpolation"
+      ],
+      "gisSkills": [
+        "IDW",
+        "Kriging"
+      ],
+      "arcgisTools": [
+        "Geostatistical Analyst"
+      ],
+      "pythonLibraries": [
+        "geopandas",
+        "scipy",
+        "rasterio"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "pageUrl": "unit01.html",
+      "reportUrl": "reports/unit01/California_Climate_Analysis_Report_Python.pdf",
+      "reportTitle": "Unit 01: 온도 아틀라스",
+      "reportDesc": "캘리포니아 전역의 온도 보간 분석 최종 결과 보고서"
+    },
+    {
+      "id": "ucla-unit02",
+      "series": "UCLA Core",
+      "unitNumber": 2,
+      "title": "Unit 02: 네트워크 분석",
+      "clientBrief": "도로망 위상 구조를 활용한 접근성 및 상권 폐점 전략 수립 (Network Analysis)",
+      "icon": "🛣️",
+      "status": "published",
+      "difficulty": "intermediate",
+      "domain": [
+        "business",
+        "network",
+        "routing"
+      ],
+      "gisSkills": [
+        "Service Area",
+        "OD Cost Matrix"
+      ],
+      "arcgisTools": [
+        "Network Analyst"
+      ],
+      "pythonLibraries": [
+        "osmnx",
+        "networkx",
+        "geopandas"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "pageUrl": "unit02.html",
+      "reportUrl": "reports/unit02/California_Starbucks_Network_Analysis_Python.pdf",
+      "reportTitle": "Unit 02: 스타벅스 접근성",
+      "reportDesc": "도로 네트워크 기반 상권 평가 및 폐점 권고 보고서"
+    },
+    {
+      "id": "ucla-unit03",
+      "series": "UCLA Core",
+      "unitNumber": 3,
+      "title": "Unit 03: 가시권 분석",
+      "clientBrief": "지형 고도 모델을 고려한 5G 기지국 전파 도달 범위 모델링 (Viewshed Analysis)",
+      "icon": "🔭",
+      "status": "published",
+      "difficulty": "intermediate",
+      "domain": [
+        "telecom",
+        "terrain",
+        "viewshed"
+      ],
+      "gisSkills": [
+        "Viewshed",
+        "Raster Analysis"
+      ],
+      "arcgisTools": [
+        "Spatial Analyst",
+        "Viewshed"
+      ],
+      "pythonLibraries": [
+        "rasterio",
+        "numpy",
+        "matplotlib"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "pageUrl": "unit03.html",
+      "reportUrl": "reports/unit03/TMobile_Coverage_Report_Python.pdf",
+      "reportTitle": "Unit 03: T-Mobile 커버리지",
+      "reportDesc": "지형에 따른 무선 전파 도달 가시권 분석 기술 보고서"
+    },
+    {
+      "id": "ucla-unit04",
+      "series": "UCLA Core",
+      "unitNumber": 4,
+      "title": "Unit 04: 지도 자동화",
+      "clientBrief": "파이썬 파이프라인과 Map Series를 이용한 116장 지도책 대량 생산 (Automation)",
+      "icon": "⚙️",
+      "status": "published",
+      "difficulty": "advanced",
+      "domain": [
+        "automation",
+        "cartography",
+        "environmental-health"
+      ],
+      "gisSkills": [
+        "Map Series",
+        "ArcPy"
+      ],
+      "arcgisTools": [
+        "Layouts",
+        "Map Series",
+        "ArcPy"
+      ],
+      "pythonLibraries": [
+        "arcpy",
+        "reportlab",
+        "pandas"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "pageUrl": "unit04.html",
+      "reportUrl": "reports/unit04/Environmental_Health_Atlas_UCLA_Unit04.pdf",
+      "reportTitle": "Unit 04: 환경 보건 아틀라스",
+      "reportDesc": "116개 카운티별 환경 지표 지도 자동화 지도책 (116p)"
+    },
+    {
+      "id": "ucla-unit05",
+      "series": "UCLA Core",
+      "unitNumber": 5,
+      "title": "Unit 05: 원격 데이터 서비스",
+      "clientBrief": "로컬 파일 없이 원격 GIS 서비스만으로 자연재해 지도를 제작하는 실습 (Remote Data Services)",
+      "icon": "🌐",
+      "status": "published",
+      "difficulty": "advanced",
+      "domain": [
+        "hazard",
+        "planning",
+        "public-safety"
+      ],
+      "gisSkills": [
+        "Remote Services",
+        "Thematic Mapping"
+      ],
+      "arcgisTools": [
+        "Add Data From Path",
+        "MapServer"
+      ],
+      "pythonLibraries": [
+        "requests",
+        "geopandas",
+        "shapely",
+        "matplotlib"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf",
+        "png",
+        "csv"
+      ],
+      "sourceType": "course-assignment",
+      "pageUrl": "unit05.html",
+      "reportUrl": "reports/unit05/Oakland_Remote_Hazard_Map_UCLA_Unit05.pdf",
+      "reportTitle": "Unit 05: 원격 재해 지도",
+      "reportDesc": "원격 GIS 서비스만 사용한 Oakland 지진성 지반재해 지도 보고서"
+    },
+    {
+      "id": "ucla-unit05-gemini",
+      "series": "Gemini Independent Run",
+      "unitNumber": 5,
+      "title": "Unit 05 (Gemini): 우회 파이프라인",
+      "clientBrief": "런타임 에러 방어(Try-Except)를 도입해 구현한 LA 지역의 지진 재해 지도 구축 (Graceful Degradation)",
+      "icon": "🤖",
+      "status": "published",
+      "difficulty": "advanced",
+      "domain": [
+        "hazard",
+        "engineering",
+        "resilience"
+      ],
+      "gisSkills": [
+        "Remote Services",
+        "Error Handling"
+      ],
+      "arcgisTools": [
+        "MapServer",
+        "FeatureServer"
+      ],
+      "pythonLibraries": [
+        "requests",
+        "geopandas",
+        "shapely"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf",
+        "png",
+        "csv"
+      ],
+      "sourceType": "independent-run",
+      "pageUrl": "unit05-gemini.html",
+      "reportUrl": "reports/unit05-gemini/LA_Remote_Hazard_Map_UCLA_Unit05_Gemini.pdf",
+      "reportTitle": "Unit 05 (Gemini): LA 재해 지도",
+      "reportDesc": "런타임 에러 처리가 적용된 Los Angeles 지진성 지반재해 지도 독립 수행 결과"
+    }
+  ]
+}

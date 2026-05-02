@@ -1,0 +1,5 @@
+metric,value,unit,interpretation
+AOI area,614.5,sq km,Los Angeles Basin analysis window.
+Liquefaction zone area,188.8,sq km,30.7% of the map window intersects liquefaction zones.
+Alquist-Priolo fault trace length,62.3,km,Course-linked California Conservation fault trace service.
+Quaternary fault length,92.4,km,Student-selected external ArcGIS FeatureServer.

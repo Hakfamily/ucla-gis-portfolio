@@ -1,0 +1,5 @@
+metric,value,unit,interpretation
+AOI area,508.3,sq km,Oakland/East Bay analysis window.
+Liquefaction zone area,118.5,sq km,23.3% of the map window intersects liquefaction zones.
+Alquist-Priolo fault trace length,47.3,km,Course-linked California Conservation fault trace service.
+Quaternary fault length,108.6,km,Student-selected external ArcGIS FeatureServer.
