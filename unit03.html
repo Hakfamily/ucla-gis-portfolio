@@ -299,16 +299,136 @@
         @media (max-width: 1100px) {
             .dual-track { grid-template-columns: 1fr; }
         }
+    
+        /* Top Navigation Styles */
+        .top-nav {
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-grey);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+        
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            gap: 30px;
+        }
+
+        .nav-logo {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            height: 100%;
+        }
+
+        .dropbtn {
+            background-color: transparent;
+            color: var(--text-main);
+            padding: 0 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+
+        .dropdown:hover .dropbtn {
+            color: var(--python-blue);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 220px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            z-index: 1;
+            top: 55px;
+            border: 1px solid var(--border-grey);
+        }
+
+        .dropdown-content a {
+            color: var(--text-main);
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f3f5;
+            transition: background 0.2s;
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8f9fa;
+            color: var(--python-blue);
+        }
+
+        .dropdown-content a.active {
+            background-color: #f0f7ff;
+            color: var(--python-blue);
+            font-weight: 800;
+            border-left: 4px solid var(--python-blue);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
 
-<nav style="background-color: var(--primary-bg); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-grey);">
-    <a href="index.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">🏠 Dashboard</a>
-    <a href="unit01.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 01</a>
-    <a href="unit02.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 02</a>
-    <a href="unit03.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 1; border-bottom: 2px solid var(--python-blue);">Unit 03</a>
-    <a href="unit04.html" style="color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: bold; opacity: 0.8;">Unit 04</a>
+<nav class="top-nav">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">🏠 Dashboard</a>
+        
+        <div class="dropdown">
+            <button class="dropbtn">🎓 UCLA Core ▾</button>
+            <div class="dropdown-content">
+                <a href="unit01.html" class="">Unit 01: 공간 보간법</a>
+                <a href="unit02.html" class="">Unit 02: 네트워크 분석</a>
+                <a href="unit03.html" class="active">Unit 03: 가시권 분석</a>
+                <a href="unit04.html" class="">Unit 04: 지도 자동화</a>
+                <a href="unit05.html" class="">Unit 05: 원격 데이터 서비스</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">🤖 Independent Runs ▾</button>
+            <div class="dropdown-content">
+                <a href="unit05-gemini.html" class="">Unit 05 (Gemini)</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">🌐 External Practices ▾</button>
+            <div class="dropdown-content">
+                <a href="#" style="color:#999; cursor:not-allowed;">Esri Learn (예정)</a>
+                <a href="#" style="color:#999; cursor:not-allowed;">Helsinki AutoGIS (예정)</a>
+            </div>
+        </div>
+    </div>
 </nav>
 
 <div class="container">
