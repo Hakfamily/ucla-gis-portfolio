@@ -1,0 +1,53 @@
+{
+  "standard-dual-track": {
+    "name": "Standard Dual-Track GIS Practice",
+    "criteria": [
+      {"name": "Client problem framing", "points": 20},
+      {"name": "ArcGIS Pro workflow clarity", "points": 20},
+      {"name": "Python reproduction quality", "points": 25},
+      {"name": "Map/report communication", "points": 25},
+      {"name": "Source and limitation notes", "points": 10}
+    ]
+  },
+  "automation-atlas": {
+    "name": "Automation and Atlas Production",
+    "criteria": [
+      {"name": "Repeatable automation pipeline", "points": 30},
+      {"name": "Cartographic consistency", "points": 25},
+      {"name": "Executive summary quality", "points": 20},
+      {"name": "Output completeness", "points": 15},
+      {"name": "Source and limitation notes", "points": 10}
+    ]
+  },
+  "remote-service-map": {
+    "name": "Remote Service Hazard Map",
+    "criteria": [
+      {"name": "Remote service integration", "points": 25},
+      {"name": "Thematic focus and geographic scope", "points": 20},
+      {"name": "Map legibility and source notes", "points": 25},
+      {"name": "Python data acquisition transparency", "points": 20},
+      {"name": "Unavailable-link fallback documentation", "points": 10}
+    ]
+  },
+  "final-project-capstone": {
+    "name": "Final Project Capstone",
+    "criteria": [
+      {"name": "Client brief and decision question", "points": 20},
+      {"name": "Data sourcing and quality control", "points": 20},
+      {"name": "ArcGIS Pro analytical workflow", "points": 20},
+      {"name": "Python reproduction and automation", "points": 20},
+      {"name": "Professional PDF report", "points": 15},
+      {"name": "Ethics, limits, and next steps", "points": 5}
+    ]
+  },
+  "external-adaptation": {
+    "name": "External Practice Adaptation",
+    "criteria": [
+      {"name": "Original source attribution", "points": 15},
+      {"name": "UCLA-style assignment rewrite", "points": 20},
+      {"name": "Public data reproducibility", "points": 20},
+      {"name": "ArcGIS and Python dual-track fit", "points": 25},
+      {"name": "Student-ready report output", "points": 20}
+    ]
+  }
+}

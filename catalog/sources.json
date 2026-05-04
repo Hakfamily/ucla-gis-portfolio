@@ -9,6 +9,15 @@
     "notes": "Original course materials. Do not publish raw data or assignment PDFs."
   },
   {
+    "id": "internal-model-run",
+    "name": "Independent Model Execution",
+    "provider": "Local AI-assisted pipeline",
+    "url": "",
+    "license": "Student-produced derivative",
+    "status": "active",
+    "notes": "Used for independent comparison runs and resilience-oriented pipeline variants."
+  },
+  {
     "id": "esri-learn",
     "name": "Esri Learn ArcGIS",
     "provider": "Esri",
@@ -25,5 +34,32 @@
     "license": "Creative Commons Attribution-ShareAlike 4.0",
     "status": "active",
     "notes": "Good for advanced Python network and raster analysis."
+  },
+  {
+    "id": "earth-lab",
+    "name": "Earth Data Science",
+    "provider": "Earth Lab / University of Colorado Boulder",
+    "url": "https://earthdatascience.org/",
+    "license": "Public educational material; verify per page before adaptation",
+    "status": "candidate",
+    "notes": "Strong candidate source for raster, lidar, remote sensing, and Python geospatial practices."
+  },
+  {
+    "id": "duke-arcgis-pro",
+    "name": "Duke ArcGIS Pro Guide",
+    "provider": "Duke University Libraries",
+    "url": "https://guides.library.duke.edu/arcgispro",
+    "license": "Public guide; cite source and verify reuse terms",
+    "status": "candidate",
+    "notes": "Useful as reference material for ArcGIS Pro workflows, not as direct copy source."
+  },
+  {
+    "id": "ucsd-gis-python-r",
+    "name": "UC San Diego GIS Python/R Guide",
+    "provider": "UC San Diego Library",
+    "url": "https://ucsd.libguides.com/gis/python-r",
+    "license": "Public guide; cite source and verify reuse terms",
+    "status": "candidate",
+    "notes": "Useful for Python/R geospatial practice references."
   }
 ]

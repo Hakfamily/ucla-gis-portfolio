@@ -277,6 +277,15 @@
             color: var(--python-blue);
         }
 
+        .dropdown-content .nav-disabled {
+            color: #94a3b8;
+            padding: 15px 20px;
+            display: block;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f3f5;
+            cursor: not-allowed;
+        }
+
         .dropdown-content a.active {
             background-color: #f0f7ff;
             color: var(--python-blue);
@@ -288,37 +297,144 @@
             display: block;
         }
 
+        .dashboard-toolbar {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            padding: 28px 40px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            border: 1px solid var(--border-grey);
+            border-radius: 12px;
+            padding: 16px;
+            background: #fbfcfd;
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .filter-row input,
+        .filter-row select {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid var(--border-grey);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #fff;
+            color: var(--text-main);
+        }
+
+        .unit-card.disabled {
+            cursor: default;
+            opacity: 0.82;
+        }
+
+        .unit-card.disabled:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--border-grey);
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag,
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            background: #eaf2f8;
+            color: #2c3e50;
+        }
+
+        .status-badge.published { background: #e8f7ef; color: #147a45; }
+        .status-badge.planned { background: #f1f5f9; color: #64748b; }
+        .status-badge.draft { background: #fff4df; color: #9a5b00; }
+
+        @media (max-width: 900px) {
+            .nav-container {
+                overflow-x: auto;
+                gap: 14px;
+                padding: 0 18px;
+            }
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-toolbar {
+                padding: 22px;
+            }
+        }
+
     </style>
 </head>
 <body>
 
 <nav class="top-nav">
     <div class="nav-container">
-        <a href="index.html" class="nav-logo">🏠 Dashboard</a>
-        
+        <a href="index.html" class="nav-logo">Dashboard</a>
         <div class="dropdown">
             <button class="dropbtn">🎓 UCLA Core ▾</button>
             <div class="dropdown-content">
-                <a href="unit01.html" class="">Unit 01: 공간 보간법</a>
-                <a href="unit02.html" class="">Unit 02: 네트워크 분석</a>
-                <a href="unit03.html" class="">Unit 03: 가시권 분석</a>
-                <a href="unit04.html" class="">Unit 04: 지도 자동화</a>
-                <a href="unit05.html" class="">Unit 05: 원격 데이터 서비스</a>
+                <a href="unit01.html">Unit 01: 공간 보간법</a>
+                <a href="unit02.html">Unit 02: 네트워크 분석</a>
+                <a href="unit03.html">Unit 03: 가시권 분석</a>
+                <a href="unit04.html">Unit 04: 지도 자동화</a>
+                <a href="unit05.html">Unit 05: 원격 데이터 서비스</a>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 06 (planned)</span>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 07 (planned)</span>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 08 (planned)</span>
             </div>
         </div>
-
         <div class="dropdown">
             <button class="dropbtn">🤖 Independent Runs ▾</button>
             <div class="dropdown-content">
-                <a href="unit05-gemini.html" class="">Unit 05 (Gemini)</a>
+                <a href="unit05-gemini.html">Unit 05 (Gemini)</a>
             </div>
         </div>
-
+        <div class="dropdown">
+            <button class="dropbtn">🎯 Final Project ▾</button>
+            <div class="dropdown-content">
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 09: Final Project (planned)</span>
+            </div>
+        </div>
         <div class="dropdown">
             <button class="dropbtn">🌐 External Practices ▾</button>
             <div class="dropdown-content">
-                <a href="#" style="color:#999; cursor:not-allowed;">Esri Learn (예정)</a>
-                <a href="#" style="color:#999; cursor:not-allowed;">Helsinki AutoGIS (예정)</a>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Esri Learn Pilot (planned)</span>
             </div>
         </div>
     </div>
@@ -330,6 +446,32 @@
 </header>
 
 <div class="container">
+    <div class="dashboard-toolbar">
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-label">Published</div>
+                <div class="stat-value" id="stat-published">-</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Planned</div>
+                <div class="stat-value" id="stat-planned">-</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Series</div>
+                <div class="stat-value" id="stat-series">-</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Domains</div>
+                <div class="stat-value" id="stat-domains">-</div>
+            </div>
+        </div>
+        <div class="filter-row">
+            <input type="search" id="filter-search" placeholder="Search by title, brief, skill, or library">
+            <select id="filter-series" aria-label="Filter by series"><option value="all">All series</option></select>
+            <select id="filter-difficulty" aria-label="Filter by difficulty"><option value="all">All difficulty</option></select>
+            <select id="filter-domain" aria-label="Filter by domain"><option value="all">All domains</option></select>
+        </div>
+    </div>
     
     <!-- 📚 섹션 1: 학습 가이드 -->
     <div class="dashboard-section">
@@ -368,6 +510,135 @@
         header.classList.toggle('active');
     }
 
+    const portalState = {
+        practices: [],
+        filters: {
+            search: '',
+            series: 'all',
+            difficulty: 'all',
+            domain: 'all'
+        }
+    };
+
+    function createEl(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined && text !== null) node.textContent = text;
+        return node;
+    }
+
+    function uniqueValues(items, getter) {
+        return [...new Set(items.flatMap(item => getter(item) || []).filter(Boolean))].sort();
+    }
+
+    function setOptions(selectId, values, label) {
+        const select = document.getElementById(selectId);
+        select.replaceChildren(new Option(label, 'all'));
+        values.forEach(value => select.appendChild(new Option(value, value)));
+    }
+
+    function populateFilters(practices) {
+        setOptions('filter-series', uniqueValues(practices, item => [item.series]), 'All series');
+        setOptions('filter-difficulty', uniqueValues(practices, item => [item.difficulty]), 'All difficulty');
+        setOptions('filter-domain', uniqueValues(practices, item => item.domain), 'All domains');
+
+        ['filter-search', 'filter-series', 'filter-difficulty', 'filter-domain'].forEach(id => {
+            document.getElementById(id).addEventListener('input', event => {
+                const key = id.replace('filter-', '');
+                portalState.filters[key] = event.target.value;
+                renderPortal();
+            });
+        });
+    }
+
+    function updateStats(practices) {
+        const published = practices.filter(item => item.status === 'published').length;
+        const planned = practices.filter(item => item.status !== 'published').length;
+        document.getElementById('stat-published').textContent = published;
+        document.getElementById('stat-planned').textContent = planned;
+        document.getElementById('stat-series').textContent = uniqueValues(practices, item => [item.series]).length;
+        document.getElementById('stat-domains').textContent = uniqueValues(practices, item => item.domain).length;
+    }
+
+    function practiceMatches(practice) {
+        const filters = portalState.filters;
+        const haystack = [
+            practice.title,
+            practice.clientBrief,
+            practice.series,
+            practice.difficulty,
+            ...(practice.domain || []),
+            ...(practice.gisSkills || []),
+            ...(practice.arcgisTools || []),
+            ...(practice.pythonLibraries || [])
+        ].join(' ').toLowerCase();
+
+        if (filters.search && !haystack.includes(filters.search.toLowerCase())) return false;
+        if (filters.series !== 'all' && practice.series !== filters.series) return false;
+        if (filters.difficulty !== 'all' && practice.difficulty !== filters.difficulty) return false;
+        if (filters.domain !== 'all' && !(practice.domain || []).includes(filters.domain)) return false;
+        return true;
+    }
+
+    function addMeta(card, practice) {
+        const meta = createEl('div', 'meta-row');
+        const status = createEl('span', `status-badge ${practice.status || 'planned'}`, practice.status || 'planned');
+        meta.appendChild(status);
+        if (practice.difficulty) meta.appendChild(createEl('span', 'tag', practice.difficulty));
+        (practice.domain || []).slice(0, 3).forEach(domain => meta.appendChild(createEl('span', 'tag', domain)));
+        card.appendChild(meta);
+    }
+
+    function createPracticeCard(practice) {
+        const card = practice.pageUrl ? document.createElement('a') : document.createElement('div');
+        card.className = `unit-card${practice.pageUrl ? '' : ' disabled'}`;
+        if (practice.pageUrl) card.href = practice.pageUrl;
+
+        card.appendChild(createEl('span', 'unit-icon', practice.icon || '📍'));
+        card.appendChild(createEl('h3', 'unit-title', practice.title || practice.id));
+        card.appendChild(createEl('p', 'unit-desc', practice.clientBrief || 'Practice details are being prepared.'));
+        addMeta(card, practice);
+        card.appendChild(createEl('span', 'btn-action', practice.pageUrl ? '학습 가이드 보기' : '준비 중'));
+        return card;
+    }
+
+    function createReportCard(practice) {
+        const card = document.createElement('a');
+        card.href = practice.reportUrl;
+        card.target = '_blank';
+        card.className = 'unit-card pdf';
+        card.appendChild(createEl('span', 'unit-icon', '📄'));
+        card.appendChild(createEl('h3', 'unit-title', practice.reportTitle || practice.title));
+        card.appendChild(createEl('p', 'unit-desc', practice.reportDesc || practice.clientBrief || 'PDF report'));
+        addMeta(card, practice);
+        card.appendChild(createEl('span', 'btn-action', 'PDF 리포트 열기'));
+        return card;
+    }
+
+    function renderPortal() {
+        const guideGrid = document.getElementById('guide-list-grid');
+        const portfolioGrid = document.getElementById('portfolio-list-grid');
+        const filtered = portalState.practices.filter(practiceMatches);
+
+        guideGrid.replaceChildren();
+        portfolioGrid.replaceChildren();
+
+        if (!filtered.length) {
+            guideGrid.appendChild(createEl('div', 'loading-text', '조건에 맞는 실습이 없습니다.'));
+            portfolioGrid.appendChild(createEl('div', 'loading-text', '조건에 맞는 결과물이 없습니다.'));
+            return;
+        }
+
+        filtered.forEach(practice => guideGrid.appendChild(createPracticeCard(practice)));
+
+        const reports = filtered.filter(practice => practice.reportUrl);
+        if (reports.length) {
+            reports.forEach(practice => portfolioGrid.appendChild(createReportCard(practice)));
+        } else {
+            portfolioGrid.appendChild(createEl('div', 'loading-text', '조건에 맞는 PDF 결과물이 없습니다.'));
+        }
+    }
+
     // 카탈로그 기반 동적 데이터 로딩 로직
     document.addEventListener('DOMContentLoaded', () => {
         fetch('catalog/catalog.json')
@@ -376,47 +647,15 @@
                 return response.json();
             })
             .then(data => {
-                const guideGrid = document.getElementById('guide-list-grid');
-                const portfolioGrid = document.getElementById('portfolio-list-grid');
-                
-                guideGrid.innerHTML = '';
-                portfolioGrid.innerHTML = '';
-
-                data.practices.forEach(practice => {
-                    // 학습 가이드 카드 동적 생성
-                    if (practice.pageUrl) {
-                        const guideCard = document.createElement('a');
-                        guideCard.href = practice.pageUrl;
-                        guideCard.className = 'unit-card';
-                        guideCard.innerHTML = `
-                            <span class="unit-icon">${practice.icon}</span>
-                            <h3 class="unit-title">${practice.title}</h3>
-                            <p class="unit-desc">${practice.clientBrief}</p>
-                            <span class="btn-action">학습 가이드 보기</span>
-                        `;
-                        guideGrid.appendChild(guideCard);
-                    }
-
-                    // 포트폴리오 PDF 카드 동적 생성
-                    if (practice.reportUrl) {
-                        const portCard = document.createElement('a');
-                        portCard.href = practice.reportUrl;
-                        portCard.target = '_blank';
-                        portCard.className = 'unit-card pdf';
-                        portCard.innerHTML = `
-                            <span class="unit-icon">📄</span>
-                            <h3 class="unit-title">${practice.reportTitle}</h3>
-                            <p class="unit-desc">${practice.reportDesc}</p>
-                            <span class="btn-action">PDF 리포트 열기</span>
-                        `;
-                        portfolioGrid.appendChild(portCard);
-                    }
-                });
+                portalState.practices = data.practices || [];
+                updateStats(portalState.practices);
+                populateFilters(portalState.practices);
+                renderPortal();
             })
             .catch(error => {
                 console.error('Error loading catalog:', error);
-                document.getElementById('guide-list-grid').innerHTML = '<div class="loading-text" style="color:red;">카탈로그 데이터를 불러오는데 실패했습니다.</div>';
-                document.getElementById('portfolio-list-grid').innerHTML = '<div class="loading-text" style="color:red;">카탈로그 데이터를 불러오는데 실패했습니다.</div>';
+                document.getElementById('guide-list-grid').replaceChildren(createEl('div', 'loading-text', '카탈로그 데이터를 불러오는데 실패했습니다.'));
+                document.getElementById('portfolio-list-grid').replaceChildren(createEl('div', 'loading-text', '카탈로그 데이터를 불러오는데 실패했습니다.'));
             });
     });
 </script>

@@ -1,0 +1,40 @@
+{
+  "skills": [
+    {
+      "skill": "Interpolation",
+      "arcgisTools": ["IDW", "Kriging", "Geostatistical Analyst"],
+      "pythonLibraries": ["scipy", "pykrige", "geopandas", "matplotlib"],
+      "practiceIds": ["ucla-unit01"]
+    },
+    {
+      "skill": "Network Analysis",
+      "arcgisTools": ["Network Analyst", "Service Area", "OD Cost Matrix"],
+      "pythonLibraries": ["osmnx", "networkx", "geopandas"],
+      "practiceIds": ["ucla-unit02"]
+    },
+    {
+      "skill": "Viewshed and Terrain",
+      "arcgisTools": ["Spatial Analyst", "Viewshed", "Raster Calculator"],
+      "pythonLibraries": ["rasterio", "numpy", "matplotlib"],
+      "practiceIds": ["ucla-unit03"]
+    },
+    {
+      "skill": "Map Automation",
+      "arcgisTools": ["Layouts", "Map Series", "ArcPy", "PDF Export"],
+      "pythonLibraries": ["pandas", "geopandas", "reportlab"],
+      "practiceIds": ["ucla-unit04"]
+    },
+    {
+      "skill": "Remote GIS Services",
+      "arcgisTools": ["Add Data From Path", "MapServer", "FeatureServer", "ImageServer"],
+      "pythonLibraries": ["requests", "geopandas", "shapely"],
+      "practiceIds": ["ucla-unit05", "ucla-unit05-gemini"]
+    },
+    {
+      "skill": "External Assignment Adaptation",
+      "arcgisTools": ["ArcGIS Pro"],
+      "pythonLibraries": ["project-dependent"],
+      "practiceIds": ["esri-learn-adaptation-pilot"]
+    }
+  ]
+}

@@ -1,49 +1,84 @@
 {
+  "schemaVersion": 2,
+  "updated": "2026-05-04",
   "practices": [
     {
       "id": "ucla-unit01",
       "series": "UCLA Core",
       "unitNumber": 1,
+      "navTitle": "Unit 01: 공간 보간법",
       "title": "Unit 01: 공간 보간법",
       "clientBrief": "미측정 온도 데이터를 지구통계학적으로 추정하여 채워넣는 기법 (Interpolation)",
       "icon": "🌡️",
       "status": "published",
       "difficulty": "beginner",
+      "estimatedHours": 4,
       "domain": [
         "climate",
         "interpolation"
       ],
       "gisSkills": [
         "IDW",
-        "Kriging"
+        "Kriging",
+        "surface modeling"
       ],
       "arcgisTools": [
-        "Geostatistical Analyst"
+        "Geostatistical Analyst",
+        "IDW",
+        "Kriging",
+        "Layout Export"
       ],
       "pythonLibraries": [
         "geopandas",
         "scipy",
-        "rasterio"
+        "pykrige",
+        "matplotlib",
+        "reportlab"
       ],
       "outputs": [
         "webpage",
-        "pdf"
+        "pdf",
+        "png"
       ],
       "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "standard-dual-track",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs are not published.",
       "pageUrl": "unit01.html",
       "reportUrl": "reports/unit01/California_Climate_Analysis_Report_Python.pdf",
+      "thumbnailUrl": "reports/unit01/jan_map.png",
       "reportTitle": "Unit 01: 온도 아틀라스",
-      "reportDesc": "캘리포니아 전역의 온도 보간 분석 최종 결과 보고서"
+      "reportDesc": "캘리포니아 전역의 온도 보간 분석 최종 결과 보고서",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit01/California_Climate_Analysis_Report_Python.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit01/jan_map.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit01/aug_map.png"
+        }
+      ],
+      "prerequisites": [],
+      "nextRecommended": [
+        "ucla-unit02"
+      ]
     },
     {
       "id": "ucla-unit02",
       "series": "UCLA Core",
       "unitNumber": 2,
+      "navTitle": "Unit 02: 네트워크 분석",
       "title": "Unit 02: 네트워크 분석",
       "clientBrief": "도로망 위상 구조를 활용한 접근성 및 상권 폐점 전략 수립 (Network Analysis)",
       "icon": "🛣️",
       "status": "published",
       "difficulty": "intermediate",
+      "estimatedHours": 5,
       "domain": [
         "business",
         "network",
@@ -51,35 +86,81 @@
       ],
       "gisSkills": [
         "Service Area",
-        "OD Cost Matrix"
+        "OD Cost Matrix",
+        "catchment analysis"
       ],
       "arcgisTools": [
-        "Network Analyst"
+        "Network Analyst",
+        "Service Area",
+        "OD Cost Matrix",
+        "Layout Export"
       ],
       "pythonLibraries": [
         "osmnx",
         "networkx",
-        "geopandas"
+        "geopandas",
+        "matplotlib",
+        "reportlab"
       ],
       "outputs": [
         "webpage",
-        "pdf"
+        "pdf",
+        "png",
+        "csv"
       ],
       "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "standard-dual-track",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs are not published.",
       "pageUrl": "unit02.html",
       "reportUrl": "reports/unit02/California_Starbucks_Network_Analysis_Python.pdf",
+      "thumbnailUrl": "reports/unit02/all_service_areas.png",
       "reportTitle": "Unit 02: 스타벅스 접근성",
-      "reportDesc": "도로 네트워크 기반 상권 평가 및 폐점 권고 보고서"
+      "reportDesc": "도로 네트워크 기반 상권 평가 및 폐점 권고 보고서",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit02/California_Starbucks_Network_Analysis_Python.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit02/all_service_areas.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit02/bottom_1_service_area.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit02/od_relocation_links.png"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit02/ranked_store_catchments.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit02/od_relocation_matrix.csv"
+        }
+      ],
+      "prerequisites": [
+        "ucla-unit01"
+      ],
+      "nextRecommended": [
+        "ucla-unit03"
+      ]
     },
     {
       "id": "ucla-unit03",
       "series": "UCLA Core",
       "unitNumber": 3,
+      "navTitle": "Unit 03: 가시권 분석",
       "title": "Unit 03: 가시권 분석",
       "clientBrief": "지형 고도 모델을 고려한 5G 기지국 전파 도달 범위 모델링 (Viewshed Analysis)",
       "icon": "🔭",
       "status": "published",
       "difficulty": "intermediate",
+      "estimatedHours": 5,
       "domain": [
         "telecom",
         "terrain",
@@ -87,36 +168,77 @@
       ],
       "gisSkills": [
         "Viewshed",
-        "Raster Analysis"
+        "Raster Analysis",
+        "scenario comparison"
       ],
       "arcgisTools": [
         "Spatial Analyst",
-        "Viewshed"
+        "Viewshed",
+        "Raster Calculator",
+        "Layout Export"
       ],
       "pythonLibraries": [
         "rasterio",
         "numpy",
-        "matplotlib"
+        "matplotlib",
+        "pandas",
+        "reportlab"
       ],
       "outputs": [
         "webpage",
-        "pdf"
+        "pdf",
+        "png",
+        "csv"
       ],
       "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "standard-dual-track",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs are not published.",
       "pageUrl": "unit03.html",
       "reportUrl": "reports/unit03/TMobile_Coverage_Report_Python.pdf",
+      "thumbnailUrl": "reports/unit03/comparison_chart.png",
       "reportTitle": "Unit 03: T-Mobile 커버리지",
-      "reportDesc": "지형에 따른 무선 전파 도달 가시권 분석 기술 보고서"
+      "reportDesc": "지형에 따른 무선 전파 도달 가시권 분석 기술 보고서",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit03/TMobile_Coverage_Report_Python.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit03/comparison_chart.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit03/map_status_quo.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit03/map_scenario_c.png"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit03/coverage_results.csv"
+        }
+      ],
+      "prerequisites": [
+        "ucla-unit01"
+      ],
+      "nextRecommended": [
+        "ucla-unit04"
+      ]
     },
     {
       "id": "ucla-unit04",
       "series": "UCLA Core",
       "unitNumber": 4,
+      "navTitle": "Unit 04: 지도 자동화",
       "title": "Unit 04: 지도 자동화",
       "clientBrief": "파이썬 파이프라인과 Map Series를 이용한 116장 지도책 대량 생산 (Automation)",
       "icon": "⚙️",
       "status": "published",
       "difficulty": "advanced",
+      "estimatedHours": 6,
       "domain": [
         "automation",
         "cartography",
@@ -124,37 +246,67 @@
       ],
       "gisSkills": [
         "Map Series",
-        "ArcPy"
+        "batch export",
+        "atlas production"
       ],
       "arcgisTools": [
         "Layouts",
         "Map Series",
-        "ArcPy"
+        "ArcPy",
+        "PDF Export"
       ],
       "pythonLibraries": [
-        "arcpy",
-        "reportlab",
-        "pandas"
+        "pandas",
+        "geopandas",
+        "matplotlib",
+        "reportlab"
       ],
       "outputs": [
         "webpage",
-        "pdf"
+        "pdf",
+        "png"
       ],
       "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "automation-atlas",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs are not published.",
       "pageUrl": "unit04.html",
       "reportUrl": "reports/unit04/Environmental_Health_Atlas_UCLA_Unit04.pdf",
+      "thumbnailUrl": "reports/unit04/unit04_atlas_preview_page03.png",
       "reportTitle": "Unit 04: 환경 보건 아틀라스",
-      "reportDesc": "116개 카운티별 환경 지표 지도 자동화 지도책 (116p)"
+      "reportDesc": "116개 카운티별 환경 지표 지도 자동화 지도책 (116p)",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit04/Environmental_Health_Atlas_UCLA_Unit04.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit04/unit04_atlas_preview_page03.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit04/unit04_summary_preview_page02_fixed-002.png"
+        }
+      ],
+      "prerequisites": [
+        "ucla-unit01"
+      ],
+      "nextRecommended": [
+        "ucla-unit05"
+      ]
     },
     {
       "id": "ucla-unit05",
       "series": "UCLA Core",
       "unitNumber": 5,
+      "navTitle": "Unit 05: 원격 데이터 서비스",
       "title": "Unit 05: 원격 데이터 서비스",
       "clientBrief": "로컬 파일 없이 원격 GIS 서비스만으로 자연재해 지도를 제작하는 실습 (Remote Data Services)",
       "icon": "🌐",
       "status": "published",
       "difficulty": "advanced",
+      "estimatedHours": 5,
       "domain": [
         "hazard",
         "planning",
@@ -162,11 +314,93 @@
       ],
       "gisSkills": [
         "Remote Services",
-        "Thematic Mapping"
+        "Thematic Mapping",
+        "source manifest"
       ],
       "arcgisTools": [
         "Add Data From Path",
-        "MapServer"
+        "MapServer",
+        "FeatureServer",
+        "ImageServer",
+        "Layout Export"
+      ],
+      "pythonLibraries": [
+        "requests",
+        "geopandas",
+        "shapely",
+        "matplotlib",
+        "reportlab"
+      ],
+      "outputs": [
+        "webpage",
+        "pdf",
+        "png",
+        "csv"
+      ],
+      "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "remote-service-map",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs are not published.",
+      "pageUrl": "unit05.html",
+      "reportUrl": "reports/unit05/Oakland_Remote_Hazard_Map_UCLA_Unit05.pdf",
+      "thumbnailUrl": "reports/unit05/oakland_remote_hazard_map.png",
+      "reportTitle": "Unit 05: 원격 재해 지도",
+      "reportDesc": "원격 GIS 서비스만 사용한 Oakland 지진성 지반재해 지도 보고서",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit05/Oakland_Remote_Hazard_Map_UCLA_Unit05.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit05/oakland_remote_hazard_map.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit05/naip_oakland_context.png"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit05/unit05_service_manifest.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit05/unit05_hazard_summary.csv"
+        }
+      ],
+      "prerequisites": [
+        "ucla-unit04"
+      ],
+      "nextRecommended": [
+        "ucla-unit06",
+        "ucla-unit05-gemini"
+      ]
+    },
+    {
+      "id": "ucla-unit05-gemini",
+      "series": "Gemini Independent Run",
+      "unitNumber": 5,
+      "navTitle": "Unit 05 (Gemini)",
+      "title": "Unit 05 (Gemini): 우회 파이프라인",
+      "clientBrief": "런타임 에러 방어(Try-Except)를 도입해 구현한 LA 지역의 지진 재해 지도 구축 (Graceful Degradation)",
+      "icon": "🤖",
+      "status": "published",
+      "difficulty": "advanced",
+      "estimatedHours": 4,
+      "domain": [
+        "hazard",
+        "engineering",
+        "resilience"
+      ],
+      "gisSkills": [
+        "Remote Services",
+        "Error Handling",
+        "fallback data strategy"
+      ],
+      "arcgisTools": [
+        "MapServer",
+        "FeatureServer",
+        "ImageServer"
       ],
       "pythonLibraries": [
         "requests",
@@ -180,50 +414,236 @@
         "png",
         "csv"
       ],
-      "sourceType": "course-assignment",
-      "pageUrl": "unit05.html",
-      "reportUrl": "reports/unit05/Oakland_Remote_Hazard_Map_UCLA_Unit05.pdf",
-      "reportTitle": "Unit 05: 원격 재해 지도",
-      "reportDesc": "원격 GIS 서비스만 사용한 Oakland 지진성 지반재해 지도 보고서"
+      "sourceType": "independent-run",
+      "sourceId": "internal-model-run",
+      "rubricId": "remote-service-map",
+      "licenseNote": "Independent model-run derivative using public remote services.",
+      "pageUrl": "unit05-gemini.html",
+      "reportUrl": "reports/unit05-gemini/LA_Remote_Hazard_Map_UCLA_Unit05_Gemini.pdf",
+      "thumbnailUrl": "reports/unit05-gemini/LA_Remote_Hazard_Map_Gemini.png",
+      "reportTitle": "Unit 05 (Gemini): LA 재해 지도",
+      "reportDesc": "런타임 에러 처리가 적용된 Los Angeles 지진성 지반재해 지도 독립 수행 결과",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit05-gemini/LA_Remote_Hazard_Map_UCLA_Unit05_Gemini.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit05-gemini/LA_Remote_Hazard_Map_Gemini.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit05-gemini/naip_la_context.png"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit05-gemini/unit05_gemini_service_manifest.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit05-gemini/unit05_gemini_hazard_summary.csv"
+        }
+      ],
+      "prerequisites": [
+        "ucla-unit05"
+      ],
+      "nextRecommended": [
+        "ucla-unit06"
+      ]
     },
     {
-      "id": "ucla-unit05-gemini",
-      "series": "Gemini Independent Run",
-      "unitNumber": 5,
-      "title": "Unit 05 (Gemini): 우회 파이프라인",
-      "clientBrief": "런타임 에러 방어(Try-Except)를 도입해 구현한 LA 지역의 지진 재해 지도 구축 (Graceful Degradation)",
-      "icon": "🤖",
-      "status": "published",
-      "difficulty": "advanced",
+      "id": "ucla-unit06",
+      "series": "UCLA Core",
+      "unitNumber": 6,
+      "navTitle": "Unit 06",
+      "title": "Unit 06: 자료 도착 후 확정",
+      "clientBrief": "새 assignment가 도착하면 기존 듀얼트랙 절차서에 따라 ArcGIS Pro 설명과 Python 재현 파이프라인을 제작합니다.",
+      "icon": "🧭",
+      "status": "planned",
+      "difficulty": "intermediate",
+      "estimatedHours": 5,
       "domain": [
-        "hazard",
-        "engineering",
-        "resilience"
+        "pending"
       ],
       "gisSkills": [
-        "Remote Services",
-        "Error Handling"
+        "assignment analysis",
+        "dual-track production"
+      ],
+      "arcgisTools": [],
+      "pythonLibraries": [],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "standard-dual-track",
+      "licenseNote": "Placeholder only. Publish no raw course files.",
+      "prerequisites": [
+        "ucla-unit05"
+      ],
+      "nextRecommended": [
+        "ucla-unit07"
+      ]
+    },
+    {
+      "id": "ucla-unit07",
+      "series": "UCLA Core",
+      "unitNumber": 7,
+      "navTitle": "Unit 07",
+      "title": "Unit 07: 자료 도착 후 확정",
+      "clientBrief": "새 assignment 요구사항에 맞춰 데이터 수집, 분석, 지도 제작, Python 재현, PDF 보고서를 구축합니다.",
+      "icon": "🧩",
+      "status": "planned",
+      "difficulty": "intermediate",
+      "estimatedHours": 5,
+      "domain": [
+        "pending"
+      ],
+      "gisSkills": [
+        "assignment analysis",
+        "workflow reproduction"
+      ],
+      "arcgisTools": [],
+      "pythonLibraries": [],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "standard-dual-track",
+      "licenseNote": "Placeholder only. Publish no raw course files.",
+      "prerequisites": [
+        "ucla-unit06"
+      ],
+      "nextRecommended": [
+        "ucla-unit08"
+      ]
+    },
+    {
+      "id": "ucla-unit08",
+      "series": "UCLA Core",
+      "unitNumber": 8,
+      "navTitle": "Unit 08",
+      "title": "Unit 08: 자료 도착 후 확정",
+      "clientBrief": "UCLA core 마지막 단원으로, Unit09 final project 직전의 기술 숙련도를 완성합니다.",
+      "icon": "🛰️",
+      "status": "planned",
+      "difficulty": "advanced",
+      "estimatedHours": 6,
+      "domain": [
+        "pending"
+      ],
+      "gisSkills": [
+        "advanced GIS workflow",
+        "portfolio production"
+      ],
+      "arcgisTools": [],
+      "pythonLibraries": [],
+      "outputs": [
+        "webpage",
+        "pdf"
+      ],
+      "sourceType": "course-assignment",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "standard-dual-track",
+      "licenseNote": "Placeholder only. Publish no raw course files.",
+      "prerequisites": [
+        "ucla-unit07"
+      ],
+      "nextRecommended": [
+        "ucla-unit09-final"
+      ]
+    },
+    {
+      "id": "ucla-unit09-final",
+      "series": "Final Project",
+      "unitNumber": 9,
+      "navTitle": "Unit 09: Final Project",
+      "title": "Unit 09: Final Project",
+      "clientBrief": "학생이 실제 의뢰를 받은 GIS 컨설턴트처럼 문제 정의, 데이터 수집, 분석, 지도, PDF 보고서를 끝까지 완성하는 capstone 프로젝트입니다.",
+      "icon": "🎯",
+      "status": "planned",
+      "difficulty": "advanced",
+      "estimatedHours": 10,
+      "domain": [
+        "capstone",
+        "consulting",
+        "portfolio"
+      ],
+      "gisSkills": [
+        "problem framing",
+        "data sourcing",
+        "cartography",
+        "automation",
+        "report writing"
       ],
       "arcgisTools": [
-        "MapServer",
-        "FeatureServer"
+        "ArcGIS Pro",
+        "Layout Export"
       ],
       "pythonLibraries": [
-        "requests",
-        "geopandas",
-        "shapely"
+        "project-dependent"
+      ],
+      "outputs": [
+        "proposal",
+        "webpage",
+        "pdf",
+        "source-manifest"
+      ],
+      "sourceType": "course-final-project",
+      "sourceId": "ucla-advanced-gis",
+      "rubricId": "final-project-capstone",
+      "licenseNote": "Final project assets must use public or student-created data only.",
+      "prerequisites": [
+        "ucla-unit08"
+      ],
+      "nextRecommended": [
+        "esri-learn-adaptation-pilot"
+      ]
+    },
+    {
+      "id": "esri-learn-adaptation-pilot",
+      "series": "External Adaptations",
+      "unitNumber": null,
+      "navTitle": "Esri Learn Pilot",
+      "title": "External Pilot: Esri Learn 시나리오 재구성",
+      "clientBrief": "ArcGIS Learn의 공개 시나리오형 튜토리얼을 UCLA assignment 형식으로 재구성하여 추가 연습 문제로 확장합니다.",
+      "icon": "🌐",
+      "status": "planned",
+      "difficulty": "intermediate",
+      "estimatedHours": 5,
+      "domain": [
+        "external-practice",
+        "scenario-based-learning"
+      ],
+      "gisSkills": [
+        "source adaptation",
+        "client brief writing",
+        "dual-track reproduction"
+      ],
+      "arcgisTools": [
+        "ArcGIS Pro"
+      ],
+      "pythonLibraries": [
+        "project-dependent"
       ],
       "outputs": [
         "webpage",
         "pdf",
-        "png",
-        "csv"
+        "source-manifest"
       ],
-      "sourceType": "independent-run",
-      "pageUrl": "unit05-gemini.html",
-      "reportUrl": "reports/unit05-gemini/LA_Remote_Hazard_Map_UCLA_Unit05_Gemini.pdf",
-      "reportTitle": "Unit 05 (Gemini): LA 재해 지도",
-      "reportDesc": "런타임 에러 처리가 적용된 Los Angeles 지진성 지반재해 지도 독립 수행 결과"
+      "sourceType": "external-adaptation",
+      "sourceId": "esri-learn",
+      "sourceUrl": "https://learn.arcgis.com/en/projects/",
+      "rubricId": "external-adaptation",
+      "licenseNote": "Do not copy tutorial text verbatim. Link and cite source, then produce an original derivative assignment.",
+      "prerequisites": [
+        "ucla-unit09-final"
+      ],
+      "nextRecommended": []
     }
   ]
 }
