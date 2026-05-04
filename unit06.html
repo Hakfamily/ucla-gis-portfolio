@@ -417,6 +417,126 @@
             }
             .download-row a { width: 100%; text-align: center; }
         }
+    
+        details {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        summary {
+            padding: 25px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .arcgis summary { background: var(--arcgis-orange); color: white; }
+        .python summary { background: var(--python-blue); color: white; }
+
+        summary::after { content: '▼'; font-size: 1rem; }
+        details[open] summary::after { content: '▲'; }
+
+        .details-content {
+            padding: 40px;
+            background: #fff;
+        }
+
+        .step-title {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .arcgis .step-title { color: var(--arcgis-orange); }
+        .python .step-title { color: var(--python-blue); }
+
+        .ui-path {
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .ui-path span { color: #f1c40f; margin: 0 8px; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th { background: #f8f9fa; width: 40%; font-weight: 800; }
+
+        .code-comment { 
+            color: #95a5a6;
+            font-style: italic; 
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .code-keyword { color: #3498db; font-weight: 700; }
+        .code-function { color: #2ecc71; font-weight: 700; }
+        .code-string { color: #f1c40f; }
+        .code-number { color: #e67e22; }
+
+        .mindset-box {
+            margin-top: 40px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 35px;
+            background: #fbfcfd;
+        }
+
+        .mindset-box h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindset-box ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mindset-box li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .mindset-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -531,29 +651,73 @@
             </div>
 
             <div class="concept-box">
-                <span class="label">STEP 01</span>
-                <h3>DEM 준비와 slope 산출</h3>
-                <p>SRTM Void-Filled DEM을 Darien Gap 분석 범위로 mosaic/clip하고, Slope 도구로 경사도를 계산합니다.</p>
+                <span class="label">개념 1</span>
+                <h3>DEM 병합 및 경사도 도출</h3>
+                <p>분석 범위가 넓어 여러 DEM 타일이 필요한 경우 하나로 병합(Mosaic)한 후, 지형의 가파름을 나타내는 경사도(Slope) 래스터를 생성합니다.</p>
             </div>
 
             <div class="concept-box">
-                <span class="label">STEP 02</span>
-                <h3>비용면 설계</h3>
-                <p>Reclassify 또는 Raster Calculator를 사용해 slope 비용을 비선형으로 키우고, 대형 수역 또는 해수면 이하 셀에는 높은 비용을 부여합니다.</p>
+                <span class="label">개념 2</span>
+                <h3>비용 표면(Cost Surface) 설계</h3>
+                <p>경사도가 높을수록 건설 비용이 기하급수적으로 증가한다고 가정하여 Reclassify나 Raster Calculator로 픽셀별 저항값을 할당합니다. 물(바다 등)에는 지나갈 수 없도록 막대한 패널티를 부여합니다.</p>
             </div>
 
             <div class="concept-box">
-                <span class="label">STEP 03</span>
-                <h3>Cost Distance / Cost Path</h3>
-                <p>Yaviza를 source로 Cost Distance와 Back Link를 계산한 뒤, Apartadó와 Chigorodó를 destination으로 각각 Cost Path를 생성합니다.</p>
+                <span class="label">개념 3</span>
+                <h3>최소 비용 경로 추적</h3>
+                <p>출발지(Yaviza)를 기준으로 거리와 누적 비용을 계산(Cost Distance)한 후, 목적지(Apartadó 등)에서부터 물결을 거슬러 올라가듯 최소 비용 경로(Cost Path)를 그려냅니다.</p>
             </div>
 
-            <div class="concept-box">
-                <span class="label">STEP 04</span>
-                <h3>지도와 3D 결과 검토</h3>
-                <p>국경, 도로망, 후보 경로를 한 지도에 배치하고, Profile Graph와 3D Scene으로 표고 변화를 검토합니다.</p>
+            <details>
+                <summary>🛠️ ArcGIS Pro 실전 운용 매뉴얼 (클릭 전개)</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식창조자가 되기 위한 필수 관문: 도구 숙련도를 증명하기 위한 단계별 버튼 클릭 가이드 (계산기 매뉴얼 방식)</p>
+                    
+                    <span class="step-title">[Step 1] 지형 경사도 계산 (Slope)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> 검색: Slope (Spatial Analyst)</span>
+                    <table>
+                        <tr><th>Input raster</th><td>Darien_DEM (병합된 지형 데이터)</td></tr>
+                        <tr><th>Output raster</th><td>Darien_Slope</td></tr>
+                        <tr><th>Output measurement</th><td>DEGREE</td></tr>
+                    </table>
+                    
+                    <span class="step-title">[Step 2] 비용 표면 생성 (Raster Calculator)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> 검색: Raster Calculator</span>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px;">경사도에 비례하여 걷기 힘들어지는 비용(수식)을 적용합니다.</p>
+                    <table>
+                        <tr><th>Map Algebra expression</th><td>1 + Power("Darien_Slope" / 8.0, 2.2)</td></tr>
+                        <tr><th>Output raster</th><td>Cost_Surface_Base</td></tr>
+                    </table>
+
+                    <span class="step-title">[Step 3] 비용 거리 계산 (Cost Distance)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> 검색: Cost Distance (Spatial Analyst)</span>
+                    <table>
+                        <tr><th>Input source data</th><td>Yaviza_Point (출발지 레이어)</td></tr>
+                        <tr><th>Input cost raster</th><td>Cost_Surface_Base</td></tr>
+                        <tr><th>Output distance raster</th><td>Cost_Distance_Raster</td></tr>
+                        <tr><th>Output backlink raster</th><td>Cost_Backlink_Raster</td></tr>
+                    </table>
+
+                    <span class="step-title">[Step 4] 최소 비용 경로 도출 (Cost Path)</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> 검색: Cost Path (Spatial Analyst)</span>
+                    <table>
+                        <tr><th>Input destination data</th><td>Destinations_Points (도착지 레이어)</td></tr>
+                        <tr><th>Input cost distance raster</th><td>Cost_Distance_Raster</td></tr>
+                        <tr><th>Input cost backlink raster</th><td>Cost_Backlink_Raster</td></tr>
+                        <tr><th>Path type</th><td>EACH_CELL</td></tr>
+                    </table>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧐 오퍼레이터의 마인드셋</h4>
+                <ul>
+                    <li>"경사도 계산 시 Z factor(수직 비율)가 수평 단위와 일치하는가?"</li>
+                    <li>"Cost Path를 돌리기 위해선 단순한 거리뿐 아니라 어느 방향으로 가야하는지를 알려주는 Backlink 래스터가 반드시 필요하다는 것을 이해했는가?"</li>
+                    <li>"출발지와 도착지 포인트가 DEM 래스터 영역 안에 온전히 들어와 있는가?"</li>
+                </ul>
             </div>
-        </section>
+</section>
 
         <section class="track-card python">
             <div class="track-header">
@@ -564,26 +728,76 @@
                 </div>
             </div>
 
+            <p class="track-intro">파이썬 프로그래밍 방식은 <code>scikit-image</code>(그래프 변환)와 <code>scipy.sparse.csgraph</code>(다익스트라 최단 경로)를 이용하여 복잡한 ArcGIS 도구 없이 배열 위에서 직접 네트워크 경로 탐색을 수행합니다.</p>
+
             <div class="concept-box">
-                <span class="label">DATA</span>
-                <h3>공개 데이터만 사용</h3>
-                <p>Mapzen/AWS Terrain Tiles DEM, DIVA-GIS 국가 경계, OpenStreetMap 도로를 다운로드하고 출처 manifest를 남겼습니다.</p>
+                <span class="label">Step 1</span>
+                <h3>배열(Array) 기반의 비용면 모델링</h3>
+                <p>Numpy를 이용해 DEM 배열의 기울기(Slope)를 계산하고, 즉석에서 수학적 비용 공식 <code>1 + (slope / 8)**2.2</code>을 벡터 연산으로 한 번에 적용합니다. 바다와 같은 장애물은 <code>np.where</code> 조건문으로 비용을 무한대에 가깝게 치환합니다.</p>
             </div>
 
             <div class="concept-box">
-                <span class="label">MODEL</span>
-                <h3>비용 공식</h3>
-                <p>기본 비용은 <b>1 + (slope / 8)^2.2</b>이며, DEM이 2m 이하인 셀은 large-water proxy로 보고 180을 추가했습니다.</p>
+                <span class="label">Step 2</span>
+                <h3>픽셀을 그래프(Graph) 노드로 변환</h3>
+                <p>이미지의 각 픽셀을 교차로(Node)로, 픽셀 사이의 인접성을 도로(Edge)로 생각합니다. 파이썬에서는 이것을 거대한 희소 행렬(Sparse Matrix) 구조로 변환하여 메모리 낭비 없이 수천만 개의 픽셀 연결망을 정의합니다.</p>
             </div>
 
             <div class="concept-box">
-                <span class="label">OUTPUT</span>
-                <h3>제출 파일 자동 생성</h3>
-                <p>지도, 프로파일, 3D view, PDF 보고서, 경로 요약 CSV, 경로 좌표 CSV, 출처 manifest가 한 번에 생성됩니다.</p>
+                <span class="label">Step 3</span>
+                <h3>Dijkstra 알고리즘 실행</h3>
+                <p>컴퓨터 과학의 고전적인 최단 거리 탐색 알고리즘인 다익스트라(Dijkstra)를 적용하여 출발 픽셀에서 모든 픽셀까지의 최소 비용을 탐색하고, 목적지에서부터 거꾸로 역추적(Backtracking)하여 좌표를 추출합니다.</p>
             </div>
 
-            <div class="code-block">python AIs/src/unit06_cost_path_pipeline.py</div>
-        </section>
+            <details>
+                <summary>👨‍💻 Python 코어 로직 해설 (초등 5학년도 이해하는 코드 읽기)</summary>
+                <div class="details-content">
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.4;">※ 지식 창조자의 무기: "클릭" 대신 컴퓨터의 두뇌와 직접 소통하는 방법. 파이썬 문법을 몰라도, 회색으로 적힌 한글 해설을 읽어보며 코드가 어떻게 흐르는지 감을 잡아보세요!</p>
+
+                    <span class="step-title">[핵심 로직 1] 기울기(Slope)를 통한 비용 계산</span>
+                    <p style="font-size:1.05rem; margin-bottom:15px; color:#444;">수십만 개의 픽셀 높낮이를 옆 픽셀과 비교해서 찰나의 순간에 경사도를 구합니다.</p>
+                    <div class="code-block">
+<span class="code-comment"># np.gradient라는 마법의 함수가 X축, Y축 방향의 픽셀 간 높이 차이를 계산합니다.</span>
+dy, dx = np.gradient(dem_array, cell_size_y, cell_size_x)
+
+<span class="code-comment"># 피타고라스 정리(x^2 + y^2 의 루트)를 써서 실제 기울기를 구합니다.</span>
+slope = np.sqrt(dx**2 + dy**2)
+
+<span class="code-comment"># 각도를 도(Degree) 단위로 예쁘게 바꿔줍니다.</span>
+slope_deg = np.degrees(np.arctan(slope))
+
+<span class="code-comment"># 정해둔 공식(1 + (경사도/8)^2.2)에 맞춰 수십만 개의 픽셀의 '힘든 정도(비용)'를 동시에 계산합니다!</span>
+cost_array = <span class="code-number">1.0</span> + (slope_deg / <span class="code-number">8.0</span>)**<span class="code-number">2.2</span>
+</div>
+
+                    <span class="step-title">[핵심 로직 2] 최단 경로(Least Cost Path) 탐색</span>
+                    <p style="font-size:1.05rem; margin-bottom:15px; color:#444;">내비게이션이 길을 찾듯, 픽셀 사이의 그물망에서 가장 적은 비용이 드는 루트를 찾습니다.</p>
+                    <div class="code-block">
+<span class="code-comment"># 1. 방금 만든 '비용 배열'을 컴퓨터가 길찾기 좋은 '그래프(Graph)' 모양으로 변환합니다.</span>
+graph = make_graph(cost_array)
+
+<span class="code-comment"># 2. 출발지 픽셀 번호(start_node)를 다익스트라(Dijkstra) 길찾기 로봇에게 줍니다.</span>
+<span class="code-comment"># 그러면 로봇이 모든 픽셀까지의 최소 비용(dist)과, 어디서 왔는지(predecessors) 흔적을 남깁니다.</span>
+dist, predecessors = dijkstra(graph, indices=start_node, return_predecessors=<span class="code-keyword">True</span>)
+
+<span class="code-comment"># 3. 도착지(end_node)에서부터 아까 남긴 흔적을 징검다리 밟듯 거꾸로 되짚어 갑니다.</span>
+path_pixels = []
+current = end_node
+<span class="code-keyword">while</span> current != start_node:
+    path_pixels.append(current)          <span class="code-comment"># 지나온 길을 바구니에 담습니다.</span>
+    current = predecessors[current]      <span class="code-comment"># 내 이전 발자국으로 이동합니다.</span>
+</div>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>🧠 지식 창조자의 마인드셋</h4>
+                <ul>
+                    <li>"ArcGIS의 Cost Distance 도구 내부는 결국 그래프 이론(Graph Theory)과 다익스트라 알고리즘으로 이루어져 있음을 코드로 증명할 수 있는가?"</li>
+                    <li>"Numpy의 벡터 연산을 활용해 for-loop 없이 수십만 픽셀의 비용을 한 번에 계산(Broadcasting)하여 속도를 극대화했는가?"</li>
+                    <li>"지형의 해상도(셀 크기)가 두 배 조밀해지면, 그래프 노드의 개수는 네 배 늘어나며 길 찾기 연산량은 기하급수적으로 폭발함을 이해하는가?"</li>
+                </ul>
+            </div>
+</section>
     </div>
 </div>
 
