@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>듀얼트랙 GIS 학습 프레임워크 - Unit 06</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --terrain-green: #2f855a;
+            --text-main: #2c3e50;
+            --muted: #6b7280;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: #7f8c8d;
+        }
+
+        header p {
+            font-size: 3.2rem;
+            color: var(--text-main);
+            margin-top: 10px;
+            font-weight: 800;
+        }
+
+        .foundation-card,
+        .result-card,
+        .track-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .foundation-card {
+            padding: 45px;
+            margin-bottom: 45px;
+            border-left: 12px solid var(--terrain-green);
+        }
+
+        .foundation-card h2,
+        .result-card h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .foundation-card p,
+        .foundation-card li {
+            font-size: 1.12rem;
+        }
+
+        .foundation-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .foundation-card li {
+            margin-bottom: 14px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .foundation-card li::before {
+            content: "•";
+            position: absolute;
+            left: 6px;
+            color: var(--terrain-green);
+            font-weight: 900;
+        }
+
+        .result-card {
+            padding: 40px;
+            margin-bottom: 45px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .metric {
+            background: #f8fafc;
+            border: 1px solid var(--border-grey);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 1.8rem;
+            color: var(--terrain-green);
+            margin-bottom: 4px;
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        figure {
+            margin: 0;
+            background: #ffffff;
+            border: 1px solid var(--border-grey);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        figure img {
+            width: 100%;
+            display: block;
+        }
+
+        figcaption {
+            padding: 14px 18px;
+            color: #4b5563;
+            font-size: 0.98rem;
+            border-top: 1px solid #eef2f7;
+        }
+
+        .side-stack {
+            display: grid;
+            gap: 24px;
+        }
+
+        .download-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .download-row a {
+            text-decoration: none;
+            font-weight: 800;
+            color: #ffffff;
+            background: var(--python-blue);
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+
+        .download-row a.secondary {
+            background: #475569;
+        }
+
+        .dual-track {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .track-card {
+            padding: 42px;
+            min-height: 760px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card.arcgis { border-top: 15px solid var(--arcgis-orange); }
+        .track-card.python { border-top: 15px solid var(--python-blue); }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .track-icon {
+            font-size: 2.6rem;
+            background: #f1f5f9;
+            width: 78px;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+        }
+
+        .track-title-group h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .arcgis .track-title-group h2 { color: var(--arcgis-orange); }
+        .python .track-title-group h2 { color: var(--python-blue); }
+
+        .track-subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .concept-box {
+            background: #ffffff;
+            border: 1px solid #f0f4f8;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .arcgis .concept-box { border-left-color: var(--arcgis-orange); }
+        .python .concept-box { border-left-color: var(--python-blue); }
+
+        .concept-box .label {
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.92rem;
+        }
+
+        .concept-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.22rem;
+            color: #2d3748;
+        }
+
+        .concept-box p {
+            margin: 0;
+            color: #4a5568;
+            font-size: 1.02rem;
+        }
+
+        .code-block {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 24px;
+            border-radius: 16px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .top-nav {
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-grey);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            overflow-x: auto;
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            gap: 30px;
+        }
+
+        .nav-logo {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            height: 100%;
+        }
+
+        .dropbtn {
+            background-color: transparent;
+            color: var(--text-main);
+            padding: 0 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+
+        .dropdown:hover .dropbtn { color: var(--python-blue); }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 240px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            z-index: 1;
+            top: 55px;
+            border: 1px solid var(--border-grey);
+        }
+
+        .dropdown-content a,
+        .dropdown-content span {
+            color: var(--text-main);
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8f9fa;
+            color: var(--python-blue);
+        }
+
+        .dropdown:hover .dropdown-content { display: block; }
+
+        @media (max-width: 900px) {
+            .container {
+                width: 390px;
+                max-width: 100vw;
+                margin: 0;
+                padding: 32px 20px;
+                overflow: hidden;
+            }
+            header { margin-bottom: 36px; }
+            header h1 { font-size: 1.6rem; }
+            header p {
+                font-size: 1.85rem;
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+            .foundation-card,
+            .result-card,
+            .track-card {
+                width: 100%;
+                max-width: 100%;
+                padding: 28px 20px;
+                border-radius: 18px;
+                overflow: hidden;
+            }
+            .foundation-card h2,
+            .result-card h2 { font-size: 1.65rem; }
+            .foundation-card li,
+            .concept-box p,
+            figcaption,
+            .metric span {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+            .metric-grid,
+            .image-grid,
+            .dual-track { grid-template-columns: 1fr; }
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                overflow-x: auto;
+                padding: 0 20px;
+            }
+            .dropdown,
+            .nav-logo {
+                flex: 0 0 auto;
+            }
+            .download-row a { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">Dashboard</a>
+        <div class="dropdown">
+            <button class="dropbtn">🎓 UCLA Core ▾</button>
+            <div class="dropdown-content">
+                <a href="unit01.html">Unit 01: 공간 보간법</a>
+                <a href="unit02.html">Unit 02: 네트워크 분석</a>
+                <a href="unit03.html">Unit 03: 가시권 분석</a>
+                <a href="unit04.html">Unit 04: 지도 자동화</a>
+                <a href="unit05.html">Unit 05: 원격 데이터 서비스</a>
+                <a href="unit06.html">Unit 06: 비용거리 분석</a>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 07 (planned)</span>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 08 (planned)</span>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">🤖 Independent Runs ▾</button>
+            <div class="dropdown-content">
+                <a href="unit05-gemini.html">Unit 05 (Gemini)</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">🎯 Final Project ▾</button>
+            <div class="dropdown-content">
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 09: Final Project (planned)</span>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">🌐 External Practices ▾</button>
+            <div class="dropdown-content">
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Esri Learn Pilot (planned)</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>듀얼트랙 GIS 학습 프레임워크</h1>
+        <p>Unit 06: Darién Gap 비용거리 분석</p>
+    </header>
+
+    <section class="foundation-card">
+        <h2>1. 과제 정의</h2>
+        <ul>
+            <li><b>해결 과제:</b> Pan-American Highway의 단절 구간인 Darién Gap을 통과하는 가상의 도로 후보를 least-cost path로 탐색합니다.</li>
+            <li><b>출발지:</b> Yaviza, Panama. <b>도착지:</b> Apartadó, Colombia와 Chigorodó, Colombia 두 지점입니다.</li>
+            <li><b>비용 기준:</b> terrain slope가 커질수록 비용이 비선형적으로 증가하고, 해수면 이하 또는 대형 수역으로 볼 수 있는 셀에는 큰 penalty를 부여했습니다.</li>
+            <li><b>제출 요구:</b> 두 least-cost path 지도, 두 elevation profile, 하나 이상의 3D terrain view, 분석 결과와 다음 반복에서 필요한 추가 변수 설명입니다.</li>
+        </ul>
+    </section>
+
+    <section class="result-card">
+        <h2>2. Python 재현 산출물</h2>
+        <div class="metric-grid">
+            <div class="metric">
+                <strong>157.7 km</strong>
+                <span>Yaviza to Apartadó</span>
+            </div>
+            <div class="metric">
+                <strong>142.5 km</strong>
+                <span>Yaviza to Chigorodó</span>
+            </div>
+            <div class="metric">
+                <strong>188 m</strong>
+                <span>두 경로의 최대 표고</span>
+            </div>
+            <div class="metric">
+                <strong>10,569</strong>
+                <span>OSM road context ways</span>
+            </div>
+        </div>
+
+        <div class="image-grid">
+            <figure>
+                <img src="reports/unit06/darien_cost_path_map.png" alt="Darién Gap least cost paths map">
+                <figcaption>두 경로는 Panama 남동부에서 Colombia 북서부로 이어지며, 초반 trunk 구간을 공유합니다. 붉은 선은 Apartadó 옵션, 파란 dashed 선은 Chigorodó 옵션입니다.</figcaption>
+            </figure>
+            <div class="side-stack">
+                <figure>
+                    <img src="reports/unit06/darien_elevation_profiles.png" alt="Elevation profiles of least cost paths">
+                    <figcaption>DEM에서 직접 샘플링한 두 경로의 표고 프로파일입니다.</figcaption>
+                </figure>
+                <figure>
+                    <img src="reports/unit06/darien_3d_terrain_paths.png" alt="3D terrain view of least cost paths">
+                    <figcaption>동일한 DEM 격자를 사용한 3D 지형 검토 화면입니다.</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <div class="download-row">
+            <a href="reports/unit06/Darien_Cost_Path_Analysis_UCLA_Unit06.pdf">PDF 보고서 열기</a>
+            <a class="secondary" href="reports/unit06/unit06_path_summary.csv">경로 요약 CSV</a>
+            <a class="secondary" href="reports/unit06/unit06_data_manifest.csv">데이터 출처 CSV</a>
+            <a class="secondary" href="reports/unit06/unit06_least_cost_paths.csv">경로 좌표 CSV</a>
+        </div>
+    </section>
+
+    <div class="dual-track">
+        <section class="track-card arcgis">
+            <div class="track-header">
+                <div class="track-icon">🖱️</div>
+                <div class="track-title-group">
+                    <h2>ArcGIS Pro 구현</h2>
+                    <p class="track-subtitle">Spatial Analyst 기반 비용거리 분석</p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">STEP 01</span>
+                <h3>DEM 준비와 slope 산출</h3>
+                <p>SRTM Void-Filled DEM을 Darien Gap 분석 범위로 mosaic/clip하고, Slope 도구로 경사도를 계산합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">STEP 02</span>
+                <h3>비용면 설계</h3>
+                <p>Reclassify 또는 Raster Calculator를 사용해 slope 비용을 비선형으로 키우고, 대형 수역 또는 해수면 이하 셀에는 높은 비용을 부여합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">STEP 03</span>
+                <h3>Cost Distance / Cost Path</h3>
+                <p>Yaviza를 source로 Cost Distance와 Back Link를 계산한 뒤, Apartadó와 Chigorodó를 destination으로 각각 Cost Path를 생성합니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">STEP 04</span>
+                <h3>지도와 3D 결과 검토</h3>
+                <p>국경, 도로망, 후보 경로를 한 지도에 배치하고, Profile Graph와 3D Scene으로 표고 변화를 검토합니다.</p>
+            </div>
+        </section>
+
+        <section class="track-card python">
+            <div class="track-header">
+                <div class="track-icon">🐍</div>
+                <div class="track-title-group">
+                    <h2>Python 구현</h2>
+                    <p class="track-subtitle">DEM 샘플링, Dijkstra pathfinding, PDF 자동 생성</p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">DATA</span>
+                <h3>공개 데이터만 사용</h3>
+                <p>Mapzen/AWS Terrain Tiles DEM, DIVA-GIS 국가 경계, OpenStreetMap 도로를 다운로드하고 출처 manifest를 남겼습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">MODEL</span>
+                <h3>비용 공식</h3>
+                <p>기본 비용은 <b>1 + (slope / 8)^2.2</b>이며, DEM이 2m 이하인 셀은 large-water proxy로 보고 180을 추가했습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">OUTPUT</span>
+                <h3>제출 파일 자동 생성</h3>
+                <p>지도, 프로파일, 3D view, PDF 보고서, 경로 요약 CSV, 경로 좌표 CSV, 출처 manifest가 한 번에 생성됩니다.</p>
+            </div>
+
+            <div class="code-block">python AIs/src/unit06_cost_path_pipeline.py</div>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>

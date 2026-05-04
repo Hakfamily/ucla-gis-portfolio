@@ -9,6 +9,33 @@
     "notes": "Original course materials. Do not publish raw data or assignment PDFs."
   },
   {
+    "id": "mapzen-skadi-dem",
+    "name": "Mapzen Terrain Tiles Skadi HGT",
+    "provider": "AWS Public Dataset / Mapzen",
+    "url": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/",
+    "license": "Public terrain tile dataset; verify source terms before reuse",
+    "status": "active",
+    "notes": "Used in Unit06 as the DEM source for slope, cost surface, elevation profile, and 3D terrain outputs."
+  },
+  {
+    "id": "diva-gis-boundaries",
+    "name": "DIVA-GIS Country Administrative Boundaries",
+    "provider": "DIVA-GIS / UC Davis GeoData",
+    "url": "https://geodata.ucdavis.edu/diva/adm/",
+    "license": "Public GIS data; verify per dataset before reuse",
+    "status": "active",
+    "notes": "Used in Unit06 for Panama and Colombia boundary context."
+  },
+  {
+    "id": "openstreetmap-overpass",
+    "name": "OpenStreetMap Road Context via Overpass",
+    "provider": "OpenStreetMap contributors",
+    "url": "https://www.openstreetmap.org/copyright",
+    "license": "Open Database License (ODbL)",
+    "status": "active",
+    "notes": "Used in Unit06 for road network context around the Darién Gap; route cost model does not depend on OSM roads."
+  },
+  {
     "id": "internal-model-run",
     "name": "Independent Model Execution",
     "provider": "Local AI-assisted pipeline",

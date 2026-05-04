@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updated": "2026-05-04",
+  "updated": "2026-05-05",
   "practices": [
     {
       "id": "ucla-unit01",
@@ -456,30 +456,85 @@
       "id": "ucla-unit06",
       "series": "UCLA Core",
       "unitNumber": 6,
-      "navTitle": "Unit 06",
-      "title": "Unit 06: 자료 도착 후 확정",
-      "clientBrief": "새 assignment가 도착하면 기존 듀얼트랙 절차서에 따라 ArcGIS Pro 설명과 Python 재현 파이프라인을 제작합니다.",
-      "icon": "🧭",
-      "status": "planned",
-      "difficulty": "intermediate",
+      "navTitle": "Unit 06: 비용거리 분석",
+      "title": "Unit 06: 비용거리 분석",
+      "clientBrief": "Darién Gap을 통과하는 가상의 도로 후보를 terrain slope와 large-water penalty 기반 least-cost path로 탐색합니다.",
+      "icon": "⛰️",
+      "status": "published",
+      "difficulty": "advanced",
       "estimatedHours": 5,
       "domain": [
-        "pending"
+        "terrain",
+        "cost-distance",
+        "infrastructure-routing"
       ],
       "gisSkills": [
-        "assignment analysis",
-        "dual-track production"
+        "Cost Distance",
+        "Cost Path",
+        "Slope",
+        "3D terrain profile"
       ],
-      "arcgisTools": [],
-      "pythonLibraries": [],
+      "arcgisTools": [
+        "Spatial Analyst",
+        "Slope",
+        "Raster Calculator",
+        "Cost Distance",
+        "Cost Path",
+        "3D Scene"
+      ],
+      "pythonLibraries": [
+        "numpy",
+        "scipy",
+        "geopandas",
+        "matplotlib",
+        "requests",
+        "reportlab"
+      ],
       "outputs": [
         "webpage",
-        "pdf"
+        "pdf",
+        "png",
+        "csv"
       ],
       "sourceType": "course-assignment",
       "sourceId": "ucla-advanced-gis",
-      "rubricId": "standard-dual-track",
-      "licenseNote": "Placeholder only. Publish no raw course files.",
+      "rubricId": "cost-distance-terrain",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs and videos are not published.",
+      "pageUrl": "unit06.html",
+      "reportUrl": "reports/unit06/Darien_Cost_Path_Analysis_UCLA_Unit06.pdf",
+      "thumbnailUrl": "reports/unit06/darien_cost_path_map.png",
+      "reportTitle": "Unit 06: Darién Gap least-cost paths",
+      "reportDesc": "Yaviza에서 Apartadó 및 Chigorodó로 향하는 비용거리 기반 도로 후보 분석 보고서",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit06/Darien_Cost_Path_Analysis_UCLA_Unit06.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit06/darien_cost_path_map.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit06/darien_elevation_profiles.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit06/darien_3d_terrain_paths.png"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit06/unit06_path_summary.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit06/unit06_data_manifest.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit06/unit06_least_cost_paths.csv"
+        }
+      ],
       "prerequisites": [
         "ucla-unit05"
       ],

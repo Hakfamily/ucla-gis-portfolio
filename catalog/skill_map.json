@@ -31,6 +31,12 @@
       "practiceIds": ["ucla-unit05", "ucla-unit05-gemini"]
     },
     {
+      "skill": "Cost Distance and Terrain Routing",
+      "arcgisTools": ["Spatial Analyst", "Slope", "Raster Calculator", "Cost Distance", "Cost Path", "3D Scene"],
+      "pythonLibraries": ["numpy", "scipy", "geopandas", "matplotlib", "reportlab"],
+      "practiceIds": ["ucla-unit06"]
+    },
+    {
       "skill": "External Assignment Adaptation",
       "arcgisTools": ["ArcGIS Pro"],
       "pythonLibraries": ["project-dependent"],

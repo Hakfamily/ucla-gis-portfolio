@@ -29,6 +29,16 @@
       {"name": "Unavailable-link fallback documentation", "points": 10}
     ]
   },
+  "cost-distance-terrain": {
+    "name": "Cost Distance and 3D Terrain Analysis",
+    "criteria": [
+      {"name": "Least-cost path execution for both destinations", "points": 25},
+      {"name": "Slope and large-water cost model transparency", "points": 20},
+      {"name": "Map of required routes, borders, and road context", "points": 20},
+      {"name": "Elevation profiles and 3D terrain visualization", "points": 20},
+      {"name": "Written discussion and future-variable limits", "points": 15}
+    ]
+  },
   "final-project-capstone": {
     "name": "Final Project Capstone",
     "criteria": [

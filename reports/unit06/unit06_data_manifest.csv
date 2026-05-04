@@ -1,0 +1,5 @@
+key,name,provider,url,role,status,records,note
+mapzen_skadi,Mapzen / AWS Terrain Tiles Skadi HGT,AWS Public Dataset,https://s3.amazonaws.com/elevation-tiles-prod/skadi/,"DEM for slope, water mask, path elevation, and 3D terrain.",available,4,Downloaded four 1-degree HGT tiles and sampled them to a 640 x 900 analysis grid.
+diva_panama,Panama administrative boundary,DIVA-GIS / UC Davis GeoData,https://geodata.ucdavis.edu/diva/adm/PAN_adm.zip,Country boundary context.,available,1,Downloaded and clipped for map context.
+diva_colombia,Colombia administrative boundary,DIVA-GIS / UC Davis GeoData,https://geodata.ucdavis.edu/diva/adm/COL_adm.zip,Country boundary context.,available,1,Downloaded and clipped for map context.
+osm_roads,OpenStreetMap roads via Overpass,OpenStreetMap contributors,https://overpass-api.de/api/interpreter,Road network context on the Panama and Colombia sides.,available,10569,Fetched highway ways for the assignment extent.
