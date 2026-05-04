@@ -594,52 +594,6 @@
         </ul>
     </section>
 
-    <section class="result-card">
-        <h2>2. Python 재현 산출물</h2>
-        <div class="metric-grid">
-            <div class="metric">
-                <strong>157.7 km</strong>
-                <span>Yaviza to Apartadó</span>
-            </div>
-            <div class="metric">
-                <strong>142.5 km</strong>
-                <span>Yaviza to Chigorodó</span>
-            </div>
-            <div class="metric">
-                <strong>188 m</strong>
-                <span>두 경로의 최대 표고</span>
-            </div>
-            <div class="metric">
-                <strong>10,569</strong>
-                <span>OSM road context ways</span>
-            </div>
-        </div>
-
-        <div class="image-grid">
-            <figure>
-                <img src="reports/unit06/darien_cost_path_map.png" alt="Darién Gap least cost paths map">
-                <figcaption>두 경로는 Panama 남동부에서 Colombia 북서부로 이어지며, 초반 trunk 구간을 공유합니다. 붉은 선은 Apartadó 옵션, 파란 dashed 선은 Chigorodó 옵션입니다.</figcaption>
-            </figure>
-            <div class="side-stack">
-                <figure>
-                    <img src="reports/unit06/darien_elevation_profiles.png" alt="Elevation profiles of least cost paths">
-                    <figcaption>DEM에서 직접 샘플링한 두 경로의 표고 프로파일입니다.</figcaption>
-                </figure>
-                <figure>
-                    <img src="reports/unit06/darien_3d_terrain_paths.png" alt="3D terrain view of least cost paths">
-                    <figcaption>동일한 DEM 격자를 사용한 3D 지형 검토 화면입니다.</figcaption>
-                </figure>
-            </div>
-        </div>
-
-        <div class="download-row">
-            <a href="reports/unit06/Darien_Cost_Path_Analysis_UCLA_Unit06.pdf">PDF 보고서 열기</a>
-            <a class="secondary" href="reports/unit06/unit06_path_summary.csv">경로 요약 CSV</a>
-            <a class="secondary" href="reports/unit06/unit06_data_manifest.csv">데이터 출처 CSV</a>
-            <a class="secondary" href="reports/unit06/unit06_least_cost_paths.csv">경로 좌표 CSV</a>
-        </div>
-    </section>
-
     <div class="dual-track">
         <section class="track-card arcgis">
             <div class="track-header">
@@ -798,8 +752,73 @@ current = end_node
                 </ul>
             </div>
 </section>
-    </div>
+
+    <section class="foundation-card" style="margin-top: 80px; border-left: 12px solid var(--python-blue);">
+        <h2 style="color: var(--python-blue); display: flex; align-items: center; gap: 15px;">
+            <span style="font-size: 2.5rem;">🎓</span> Final Results & Portfolio
+        </h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 60px; margin-top: 40px;">
+            
+            <!-- 💻 Track 2: Python Engineer Pipeline Output -->
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 20px; border-left: 10px solid var(--python-blue); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
+                    <div style="font-size: 2rem; background: white; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">⚡</div>
+                    <div>
+                        <h3 style="color: var(--python-blue); margin: 0; font-size: 1.6rem;">Python Engineer Pipeline Output</h3>
+                        <p style="margin: 5px 0 0 0; color: #7f8c8d;">Numpy 벡터 연산 및 Dijkstra 알고리즘 최적화 결과물</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.1rem; color: #444; line-height: 1.7; margin-bottom: 40px;">
+                    scikit-image와 scipy.sparse.csgraph를 활용한 고성능 비용거리 탐색 결과입니다. 
+                    SRTM DEM을 사용하여 지형을 모델링하였으며, 157km의 Darién Gap 구간에서 최적의 도로 건설 경로를 제안하는 고급 엔지니어링 리포트입니다.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                    <!-- Result 1 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit06/darien_cost_path_map.png" alt="Cost Path Map" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Darién Gap Least Cost Paths Map</p>
+                    </div>
+                    <!-- Result 2 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit06/darien_elevation_profiles.png" alt="Elevation Profiles" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">Path Elevation Profiles</p>
+                    </div>
+                    <!-- Result 3 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); text-align: center;">
+                        <img src="reports/unit06/darien_3d_terrain_paths.png" alt="3D Terrain Map" style="width: 100%; border-radius: 10px;">
+                        <p style="margin-top: 15px; font-weight: 800; color: var(--text-main);">3D Terrain Paths View</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <a href="reports/unit06/Darien_Cost_Path_Analysis_UCLA_Unit06.pdf" target="_blank" 
+                       style="display: inline-block; padding: 18px 40px; background: var(--python-blue); color: white; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 10px 20px rgba(0, 112, 192, 0.2);">
+                        View Full Python Report (PDF)
+                    </a>
+                </div>
+
+                <div style="background: #0f1115; padding: 30px; border-radius: 15px; border: 1px solid #2d3436;">
+                    <h4 style="color: #95a5a6; margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">📊 Pipeline Performance Logs</h4>
+                    <div style="font-family: 'Fira Code', monospace; color: #2ecc71; font-size: 0.95rem; line-height: 1.6;">
+                        <span style="color: #95a5a6;">[INFO]</span> Loaded SRTM DEM and generated 10,569 OSM road context ways<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Calculated slope and generated cost surface (188m max elevation)<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Route 1 (Yaviza to Apartadó): 157.7 km calculated<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Route 2 (Yaviza to Chigorodó): 142.5 km calculated<br>
+                        <span style="color: #95a5a6;">[INFO]</span> Generated 3D plots, elevation profiles, and exported CSV manifests.<br>
+                        <span style="color: #95a5a6;">[INFO]</span> 5-page PDF report regenerated from verified routes and arrays.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 40px; color: #94a3b8; font-size: 0.95rem; border-top: 1px solid #eee;">
+        &copy; 2026 UCLA Extension Advanced GIS - Dual-Track Learning Framework Project
+    </footer>
 </div>
 
 </body>
 </html>
+
