@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>듀얼트랙 GIS 학습 프레임워크 - Unit 07</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --arcgis-orange: #f7941d;
+            --python-blue: #0070c0;
+            --model-green: #2f855a;
+            --text-main: #2c3e50;
+            --muted: #6b7280;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-grey: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: #7f8c8d;
+        }
+
+        header p {
+            font-size: 3.1rem;
+            color: var(--text-main);
+            margin-top: 10px;
+            font-weight: 800;
+        }
+
+        .foundation-card,
+        .track-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .foundation-card {
+            padding: 45px;
+            margin-bottom: 45px;
+            border-left: 12px solid var(--model-green);
+        }
+
+        .foundation-card h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .foundation-card p,
+        .foundation-card li {
+            font-size: 1.12rem;
+        }
+
+        .foundation-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .foundation-card li {
+            margin-bottom: 14px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .foundation-card li::before {
+            content: "•";
+            position: absolute;
+            left: 6px;
+            color: var(--model-green);
+            font-weight: 900;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(160px, 1fr));
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .metric {
+            background: #f8fafc;
+            border: 1px solid var(--border-grey);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 1.55rem;
+            color: var(--model-green);
+            margin-bottom: 4px;
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .dual-track {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .track-card {
+            padding: 42px;
+            min-height: 760px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .track-card.arcgis { border-top: 15px solid var(--arcgis-orange); }
+        .track-card.python { border-top: 15px solid var(--python-blue); }
+
+        .track-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .track-icon {
+            font-size: 3rem;
+            background: #f1f3f5;
+            width: 82px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+        }
+
+        .track-title-group h2 { margin: 0; font-size: 1.8rem; }
+        .arcgis .track-title-group h2 { color: var(--arcgis-orange); }
+        .python .track-title-group h2 { color: var(--python-blue); }
+        .track-subtitle { margin: 0; color: #7f8c8d; font-size: 1.05rem; }
+
+        .track-intro {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 28px;
+        }
+
+        .concept-box {
+            background: #fff;
+            border: 1px solid #f0f4f8;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .concept-box .label {
+            font-weight: 800;
+            color: #a0aec0;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1rem;
+        }
+
+        .concept-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.28rem;
+            color: #2d3748;
+        }
+
+        .concept-box p {
+            margin: 0;
+            font-size: 1.03rem;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        .arcgis .concept-box { border-left-color: var(--arcgis-orange); }
+        .python .concept-box { border-left-color: var(--python-blue); }
+
+        details {
+            margin-top: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        summary {
+            padding: 24px;
+            font-weight: 800;
+            font-size: 1.22rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .arcgis summary { background: var(--arcgis-orange); color: white; }
+        .python summary { background: var(--python-blue); color: white; }
+        summary::after { content: '▼'; font-size: 1rem; }
+        details[open] summary::after { content: '▲'; }
+
+        .details-content {
+            padding: 38px;
+            background: #fff;
+        }
+
+        .step-title {
+            display: block;
+            font-size: 1.32rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .arcgis .step-title { color: var(--arcgis-orange); }
+        .python .step-title { color: var(--python-blue); }
+
+        .ui-path {
+            background: #333;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.98rem;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .ui-path span { color: #f1c40f; margin: 0 8px; font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 0.98rem;
+            vertical-align: top;
+        }
+
+        th { background: #f8f9fa; width: 38%; font-weight: 800; }
+
+        .code-block {
+            background: #0f1115;
+            color: #ffffff;
+            padding: 28px;
+            border-radius: 18px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.94rem;
+            font-weight: 500;
+            line-height: 1.72;
+            overflow-x: auto;
+            margin-bottom: 32px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            border: 1px solid #2d3436;
+        }
+
+        .code-comment {
+            color: #95a5a6;
+            font-style: italic;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+        .code-keyword { color: #3498db; font-weight: 700; }
+        .code-function { color: #2ecc71; font-weight: 700; }
+        .code-string { color: #f1c40f; }
+        .code-number { color: #e67e22; }
+
+        .mindset-box {
+            margin-top: 40px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 32px;
+            background: #fbfcfd;
+        }
+
+        .mindset-box h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mindset-box ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mindset-box li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            color: #4a5568;
+        }
+
+        .mindset-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .portfolio-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 34px;
+            margin-top: 34px;
+        }
+
+        .result-panel {
+            background: #f8f9fa;
+            padding: 34px;
+            border-radius: 18px;
+            border-left: 10px solid var(--python-blue);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: white;
+            padding: 18px;
+            border-radius: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .result-card img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .result-card p {
+            margin: 14px 0 0;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .download-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 24px 0 34px;
+        }
+
+        .download-row a {
+            display: inline-block;
+            padding: 13px 20px;
+            background: var(--python-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .download-row a.secondary { background: #475569; }
+
+        .log-box {
+            background: #0f1115;
+            padding: 28px;
+            border-radius: 14px;
+            border: 1px solid #2d3436;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: #2ecc71;
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        .log-box h4 {
+            color: #95a5a6;
+            margin-top: 0;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        .top-nav {
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-grey);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            gap: 30px;
+        }
+
+        .nav-logo {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 20px;
+        }
+
+        .dropdown { position: relative; display: inline-block; height: 100%; }
+        .dropbtn {
+            background-color: transparent;
+            color: var(--text-main);
+            padding: 0 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+        .dropdown:hover .dropbtn { color: var(--python-blue); }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 240px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            z-index: 1;
+            top: 55px;
+            border: 1px solid var(--border-grey);
+        }
+        .dropdown-content a {
+            color: var(--text-main);
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .dropdown-content a:hover { background-color: #f8f9fa; color: var(--python-blue); }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        @media (max-width: 1100px) {
+            .dual-track { grid-template-columns: 1fr; }
+            .metric-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+            header p { font-size: 2.3rem; }
+            .container { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">Dashboard</a>
+        <div class="dropdown">
+            <button class="dropbtn">🎓 UCLA Core ▾</button>
+            <div class="dropdown-content">
+                <a href="unit01.html">Unit 01: 공간 보간법</a>
+                <a href="unit02.html">Unit 02: 네트워크 분석</a>
+                <a href="unit03.html">Unit 03: 가시권 분석</a>
+                <a href="unit04.html">Unit 04: 지도 자동화</a>
+                <a href="unit05.html">Unit 05: 원격 데이터 서비스</a>
+                <a href="unit06.html">Unit 06: 비용거리 분석</a>
+                <a href="unit07.html">Unit 07: ModelBuilder Tool</a>
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 08 (planned)</span>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">🤖 Independent Runs ▾</button>
+            <div class="dropdown-content">
+                <a href="unit05-gemini.html">Unit 05 (Gemini)</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">🎯 Final Project ▾</button>
+            <div class="dropdown-content">
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Unit 09: Final Project (planned)</span>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">🌐 External Practices ▾</button>
+            <div class="dropdown-content">
+                <span class="nav-disabled" style="color:#94a3b8; padding:15px 20px; display:block; font-weight:500; border-bottom:1px solid #f1f3f5; cursor:not-allowed;">Esri Learn Pilot (planned)</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <header>
+        <h1>듀얼트랙 GIS 학습 프레임워크</h1>
+        <p>Unit 07: ModelBuilder 해수면 상승 도구</p>
+    </header>
+
+    <section class="foundation-card">
+        <h2>1. 과제 정의</h2>
+        <ul>
+            <li><b>해결 과제:</b> DEM raster를 입력받아 사용자가 지정한 sea level change와 area of concern radius를 반영하는 ArcGIS ModelBuilder tool을 만듭니다.</li>
+            <li><b>제출물:</b> tool이 들어 있는 toolbox file과, ModelBuilder workflow 및 tool interface screenshots가 들어간 PDF document 두 가지입니다.</li>
+            <li><b>필수 입력값:</b> input raster dataset, sea level change in feet, area of concern radius in feet, output polygon path 네 항목을 모두 tool parameter로 노출해야 합니다.</li>
+            <li><b>필수 처리 순서:</b> meters-to-feet Raster Calculator, 0/1 inundation Raster Calculator, Raster to Polygon, Make Feature Layer, Buffer 순서입니다.</li>
+            <li><b>기본 테스트:</b> 제공 DEM `unit07-010-n32_w081_1arc_v2.tif`, sea level change `6 ft`, area of concern radius `500 ft`로 실행했습니다.</li>
+        </ul>
+        <div class="metric-grid">
+            <div class="metric"><strong>20 pts</strong><span>총점: parameters 5, operations 10, defaults/testing 5</span></div>
+            <div class="metric"><strong>12,967,201</strong><span>valid DEM cells</span></div>
+            <div class="metric"><strong>20,996</strong><span>raster-to-polygon features before dissolve</span></div>
+            <div class="metric"><strong>6 pages</strong><span>Python verification PDF</span></div>
+        </div>
+    </section>
+
+    <div class="dual-track">
+        <section class="track-card arcgis">
+            <div class="track-header">
+                <div class="track-icon">🖱️</div>
+                <div class="track-title-group">
+                    <h2>ArcGIS Pro 구현</h2>
+                    <p class="track-subtitle">ModelBuilder tool 제작 매뉴얼</p>
+                </div>
+            </div>
+
+            <p class="track-intro">ArcGIS 방식의 핵심은 지도를 한 번 만드는 것이 아니라, 다른 DEM과 다른 sea-level 값을 넣어도 다시 실행되는 tool을 만드는 것입니다.</p>
+
+            <div class="concept-box">
+                <span class="label">개념 1</span>
+                <h3>ModelBuilder는 보이는 프로그램</h3>
+                <p>도구 상자 안의 각 도구를 선으로 연결하면 하나의 작은 프로그램이 됩니다. 이번 과제에서는 Raster Calculator부터 Buffer까지를 하나의 실행 흐름으로 묶습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">개념 2</span>
+                <h3>Parameter는 사용자가 채우는 빈칸</h3>
+                <p>input raster, sea level change, buffer radius, output path가 tool dialog에 보여야 합니다. 숨겨진 model variable이면 채점 기준의 parameter 점수를 잃습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">개념 3</span>
+                <h3>PDF는 실행 증빙 문서</h3>
+                <p>PDF에는 예쁜 설명보다 model canvas, tool interface, parameter defaults, output layer가 실제로 보이는 스크린샷이 중요합니다.</p>
+            </div>
+
+            <details open>
+                <summary>ArcGIS Pro 실전 운용 매뉴얼</summary>
+                <div class="details-content">
+                    <span class="step-title">[1단계] Toolbox와 Model 만들기</span>
+                    <span class="ui-path">Catalog pane <span>▶</span> Toolboxes <span>▶</span> New Toolbox <span>▶</span> Analysis 탭 <span>▶</span> ModelBuilder</span>
+                    <table>
+                        <tr><th>Toolbox name</th><td>Unit07_SeaLevel_ModelBuilder.atbx</td></tr>
+                        <tr><th>Model name</th><td>SeaLevelRiseScenarioTool</td></tr>
+                        <tr><th>저장 위치</th><td>ArcGIS Pro project folder 내부</td></tr>
+                    </table>
+
+                    <span class="step-title">[2단계] 사용자 입력 Parameter 노출</span>
+                    <span class="ui-path">ModelBuilder canvas <span>▶</span> variable 우클릭 <span>▶</span> Parameter 체크</span>
+                    <table>
+                        <tr><th>Input Raster</th><td>Data Type: Raster Dataset, Required, elevation in meters</td></tr>
+                        <tr><th>Sea Level Change</th><td>Data Type: Long Integer, Default: 6, Unit: feet</td></tr>
+                        <tr><th>Area of Concern Radius</th><td>Data Type: Long Integer 또는 Linear Unit, Default: 500 feet</td></tr>
+                        <tr><th>Output Polygon</th><td>Data Type: Feature Class, Direction: Output</td></tr>
+                    </table>
+
+                    <span class="step-title">[3단계] DEM meters를 feet로 변환</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> Raster Calculator</span>
+                    <table>
+                        <tr><th>Input</th><td>Input Raster parameter</td></tr>
+                        <tr><th>Expression</th><td>`%Input Raster% * 3.28084`</td></tr>
+                        <tr><th>Output raster</th><td>dem_feet</td></tr>
+                    </table>
+
+                    <span class="step-title">[4단계] 0/1 inundation raster 만들기</span>
+                    <span class="ui-path">Analysis 탭 <span>▶</span> Tools <span>▶</span> Raster Calculator</span>
+                    <table>
+                        <tr><th>Expression</th><td>`Con("dem_feet" &lt;= %Sea Level Change%, 0, 1)`</td></tr>
+                        <tr><th>0</th><td>new sea level below areas, likely inundated</td></tr>
+                        <tr><th>1</th><td>not likely inundated</td></tr>
+                        <tr><th>Output raster</th><td>inundation_01_raster</td></tr>
+                    </table>
+
+                    <span class="step-title">[5단계] Raster to Polygon과 침수 구역 선택</span>
+                    <span class="ui-path">Tools <span>▶</span> Raster to Polygon <span>▶</span> Make Feature Layer</span>
+                    <table>
+                        <tr><th>Raster to Polygon input</th><td>inundation_01_raster</td></tr>
+                        <tr><th>Field</th><td>Value 또는 gridcode</td></tr>
+                        <tr><th>Make Feature Layer SQL</th><td>`gridcode = 0`</td></tr>
+                        <tr><th>Layer name</th><td>submerged_polygon_layer</td></tr>
+                    </table>
+
+                    <span class="step-title">[6단계] Buffer로 최종 area of concern 만들기</span>
+                    <span class="ui-path">Tools <span>▶</span> Buffer <span>▶</span> Run</span>
+                    <table>
+                        <tr><th>Input Features</th><td>submerged_polygon_layer</td></tr>
+                        <tr><th>Distance</th><td>`%Area of Concern Radius% Feet`</td></tr>
+                        <tr><th>Dissolve Type</th><td>ALL 권장</td></tr>
+                        <tr><th>Output Feature Class</th><td>Output Polygon parameter</td></tr>
+                    </table>
+
+                    <span class="step-title">[7단계] 실행 테스트와 PDF 캡처</span>
+                    <span class="ui-path">ModelBuilder <span>▶</span> Validate <span>▶</span> Run <span>▶</span> Export/캡처</span>
+                    <table>
+                        <tr><th>테스트 입력</th><td>unit07-010-n32_w081_1arc_v2.tif</td></tr>
+                        <tr><th>Default test</th><td>Sea Level Change = 6 ft, Area Radius = 500 ft</td></tr>
+                        <tr><th>PDF screenshot 1</th><td>전체 ModelBuilder canvas</td></tr>
+                        <tr><th>PDF screenshot 2</th><td>tool dialog에 네 parameter가 보이는 화면</td></tr>
+                        <tr><th>PDF screenshot 3</th><td>final output polygon layer가 지도 위에 나타난 화면</td></tr>
+                    </table>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>오퍼레이터의 점검 기준</h4>
+                <ul>
+                    <li>네 입력값이 모두 tool interface에 보이는가?</li>
+                    <li>Raster Calculator 두 번, Raster to Polygon, Make Feature Layer, Buffer가 빠짐없이 연결됐는가?</li>
+                    <li>default value로 실제 실행해 결과 polygon을 확인했는가?</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="track-card python">
+            <div class="track-header">
+                <div class="track-icon">{ }</div>
+                <div class="track-title-group">
+                    <h2>Python 구현</h2>
+                    <p class="track-subtitle">ModelBuilder 내부 로직 검증 파이프라인</p>
+                </div>
+            </div>
+
+            <p class="track-intro">Python은 ArcGIS 제출물을 대신하지 않습니다. 대신 같은 DEM과 같은 기본값으로 ModelBuilder가 어떤 계산을 하는지 눈에 보이는 PDF/지도/CSV로 검증합니다.</p>
+
+            <div class="concept-box">
+                <span class="label">핵심 1</span>
+                <h3>DEM은 칸마다 높이가 적힌 지도</h3>
+                <p>13백만 개 가까운 DEM cell을 열고, 각 cell의 meter 값을 feet로 바꿉니다. 이 단계가 첫 번째 Raster Calculator와 같습니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">핵심 2</span>
+                <h3>0/1 스티커 지도 만들기</h3>
+                <p>6 ft 기준보다 낮은 칸은 침수 후보로 표시합니다. 컴퓨터 입장에서는 파란 스티커와 빈 스티커를 전부 붙이는 일입니다.</p>
+            </div>
+
+            <div class="concept-box">
+                <span class="label">핵심 3</span>
+                <h3>붙어 있는 칸을 polygon으로 묶기</h3>
+                <p>Raster to Polygon처럼 인접한 침수 cell들을 하나의 색칠 구역으로 묶고, 그 주변에 500 ft 안전띠를 둘러 final area of concern을 만듭니다.</p>
+            </div>
+
+            <details open>
+                <summary>Python 코어 로직 해설</summary>
+                <div class="details-content">
+                    <span class="step-title">[핵심 로직 0] DEM 파일 열기</span>
+                    <div class="code-block"><span class="code-comment"># DATA_DIR은 Unit 07 원자료 폴더입니다.
+# 높이 숫자가 칸마다 적힌 DEM 파일을 실제로 엽니다.</span>
+INPUT_DEM = DATA_DIR / <span class="code-string">"unit07-010-n32_w081_1arc_v2.tif"</span>
+
+<span class="code-keyword">with</span> rasterio.open(INPUT_DEM) <span class="code-keyword">as</span> src:
+    data_m = src.read(<span class="code-number">1</span>, masked=<span class="code-keyword">True</span>).astype(<span class="code-string">"float32"</span>)
+    data_ft = data_m * <span class="code-number">3.28084</span>
+</div>
+
+                    <span class="step-title">[핵심 로직 1] sea level 기준으로 0/1 mask 만들기</span>
+                    <div class="code-block"><span class="code-comment"># sea_level_change_ft는 tool dialog에서 학생이 입력하는 숫자입니다.
+# 이번 기본 테스트에서는 6 ft를 넣었습니다.</span>
+sea_level_change_ft = <span class="code-number">6</span>
+valid = ~np.ma.getmaskarray(data_ft)
+
+<span class="code-comment"># 기준보다 낮거나 같은 칸을 True로 표시합니다.
+# 이것이 ModelBuilder의 두 번째 Raster Calculator 결과입니다.</span>
+inundated = valid & (data_ft <= sea_level_change_ft)
+new_scenario_band = valid & (data_ft > <span class="code-number">0</span>) & (data_ft <= sea_level_change_ft)
+</div>
+
+                    <span class="step-title">[핵심 로직 2] Raster to Polygon 재현</span>
+                    <div class="code-block"><span class="code-comment"># 0/1 스티커 지도를 polygon 조각으로 바꿉니다.
+# 붙어 있는 침수 칸들이 하나의 색칠 구역으로 묶입니다.</span>
+raster = inundated.astype(<span class="code-string">"uint8"</span>)
+geometries = [
+    shape(geom)
+    <span class="code-keyword">for</span> geom, value <span class="code-keyword">in</span> features.shapes(raster, mask=inundated, transform=transform)
+    <span class="code-keyword">if</span> int(value) == <span class="code-number">1</span>
+]
+inundated_polygons = gpd.GeoDataFrame(geometry=geometries, crs=<span class="code-string">"EPSG:4326"</span>)
+</div>
+
+                    <span class="step-title">[핵심 로직 3] Make Feature Layer와 Buffer 재현</span>
+                    <div class="code-block"><span class="code-comment"># ArcGIS의 gridcode = 0 선택과 같은 결과만 남긴 뒤,
+# 500 ft를 meter로 바꿔 projected CRS에서 buffer를 두릅니다.</span>
+TARGET_CRS = <span class="code-string">"EPSG:32617"</span>
+radius_m = <span class="code-number">500</span> * <span class="code-number">0.3048</span>
+
+projected = inundated_polygons.to_crs(TARGET_CRS)
+merged = unary_union(projected.geometry)
+area_of_concern = merged.buffer(radius_m)
+</div>
+
+                    <span class="step-title">[핵심 로직 4] PDF, PNG, CSV 저장</span>
+                    <div class="code-block"><span class="code-comment"># 결과를 학생이 검토할 수 있는 산출물로 저장합니다.
+# PDF는 채점표 체크리스트, workflow 그림, 지도 2장을 포함합니다.</span>
+summary.to_csv(DOC_DIR / <span class="code-string">"unit07_scenario_summary.csv"</span>, index=<span class="code-keyword">False</span>)
+fig.savefig(DOC_DIR / <span class="code-string">"unit07_sea_level_scenario_map.png"</span>, dpi=<span class="code-number">180</span>)
+build_pdf(
+    DOC_DIR / <span class="code-string">"Sea_Level_Rise_ModelBuilder_UCLA_Unit07.pdf"</span>
+)
+</div>
+                </div>
+            </details>
+
+            <div class="mindset-box">
+                <h4>지식 창조자의 점검 기준</h4>
+                <ul>
+                    <li>ModelBuilder의 각 상자를 코드 한 줄 또는 한 함수로 설명할 수 있는가?</li>
+                    <li>입력값을 바꾸면 같은 파이프라인이 다시 실행되는 구조인가?</li>
+                    <li>PDF, 지도, CSV 숫자가 같은 계산 결과에서 나온 것인가?</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <section class="foundation-card" style="margin-top: 80px; border-left: 12px solid var(--python-blue);">
+        <h2 style="color: var(--python-blue);">Final Results & Portfolio</h2>
+        <div class="portfolio-wrap">
+            <div class="result-panel">
+                <h3 style="color: var(--python-blue); margin-top: 0; font-size: 1.55rem;">Python Engineer Pipeline Output</h3>
+                <p style="font-size: 1.08rem; color: #444; line-height: 1.7; margin-bottom: 26px;">
+                    제공 DEM을 실제로 읽어 ModelBuilder 필수 처리 순서를 재현했습니다. PDF에는 requirement checklist, workflow diagram, default scenario summary, sea-level map, area-of-concern map이 포함됩니다.
+                </p>
+
+                <div class="result-grid">
+                    <div class="result-card">
+                        <img src="reports/unit07/unit07_sea_level_scenario_map.png" alt="Unit 07 sea level scenario map">
+                        <p>Sea Level Scenario Map</p>
+                    </div>
+                    <div class="result-card">
+                        <img src="reports/unit07/unit07_area_of_concern_map.png" alt="Unit 07 area of concern map">
+                        <p>Area of Concern Map</p>
+                    </div>
+                    <div class="result-card">
+                        <img src="reports/unit07/unit07_modelbuilder_workflow.png" alt="Unit 07 ModelBuilder workflow diagram">
+                        <p>ModelBuilder Workflow Diagram</p>
+                    </div>
+                </div>
+
+                <div class="download-row">
+                    <a href="reports/unit07/Sea_Level_Rise_ModelBuilder_UCLA_Unit07.pdf" target="_blank">View Python Verification PDF</a>
+                    <a class="secondary" href="reports/unit07/unit07_scenario_summary.csv" target="_blank">Scenario Summary CSV</a>
+                    <a class="secondary" href="reports/unit07/unit07_model_steps.csv" target="_blank">Model Steps CSV</a>
+                    <a class="secondary" href="reports/unit07/unit07_area_of_concern.geojson" target="_blank">Final Polygon GeoJSON</a>
+                </div>
+
+                <div class="log-box">
+                    <h4>Pipeline Execution Logs</h4>
+                    <span style="color: #95a5a6;">[INFO]</span> Loaded DEM: 3601 x 3601 cells, EPSG:4326<br>
+                    <span style="color: #95a5a6;">[INFO]</span> Default parameters: sea level change 6 ft, area radius 500 ft<br>
+                    <span style="color: #95a5a6;">[INFO]</span> Valid DEM cells: 12,967,201<br>
+                    <span style="color: #95a5a6;">[INFO]</span> Inundated cells: 6,027,770; new scenario band cells: 458,956<br>
+                    <span style="color: #95a5a6;">[INFO]</span> Raster-to-polygon features before dissolve: 20,996<br>
+                    <span style="color: #95a5a6;">[INFO]</span> Inundated area: 4,850.14 sq km; final area of concern: 6,402.20 sq km<br>
+                    <span style="color: #95a5a6;">[INFO]</span> Generated 6-page PDF, 3 PNGs, 3 CSVs, and 2 GeoJSON outputs.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 80px; padding: 40px; color: #94a3b8; font-size: 0.95rem; border-top: 1px solid #eee;">
+        &copy; 2026 UCLA Extension Advanced GIS - Dual-Track Learning Framework Project
+    </footer>
+</div>
+
+</body>
+</html>

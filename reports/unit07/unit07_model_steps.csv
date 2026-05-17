@@ -1,0 +1,9 @@
+sequence,modelbuilder_operation,purpose,expression_or_setting,output
+1,Input Raster parameter,Prompt the user for an elevation raster in meters.,"Parameter: Required, Data Type: Raster Dataset",Input DEM variable
+2,Sea Level Change parameter,Prompt the user for the new sea-level threshold in feet.,"Parameter: Long Integer, Default: 6",Sea level change variable
+3,Area of Concern Radius parameter,Prompt the user for the final buffer distance in feet.,"Parameter: Linear Unit or Long Integer, Default: 500 ft",Buffer radius variable
+4,Raster Calculator,Convert DEM elevation values from meters to feet.,DEM_in_feet = DEM_meters * 3.28084,dem_feet
+5,Raster Calculator,Create a 0/1 raster for below/above the new sea level.,"Con(dem_feet <= sea_level_change_ft, 0, 1)",inundation_01_raster
+6,Raster to Polygon,Convert the 0/1 raster to polygon features.,Simplify polygons: checked or default,inundation_polygons
+7,Make Feature Layer,Keep only polygons likely to be submerged.,gridcode = 0,submerged_polygon_layer
+8,Buffer,Create the final area-of-concern polygon.,Distance = area_of_concern_radius_ft,final_output_polygon

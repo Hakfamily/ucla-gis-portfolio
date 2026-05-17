@@ -1,0 +1,12 @@
+metric,value,unit,note
+Input DEM,unit07-010-n32_w081_1arc_v2.tif,file,Course-provided 1 arc-second DEM raster.
+Raster size,3601 x 3601,cells,Full raster grid used for threshold and polygonization.
+Sea level change default,6,feet,Default user-facing tool parameter.
+Area of concern radius default,500,feet,Default user-facing buffer parameter.
+Valid DEM cells,12967201,cells,Cells with usable elevation values.
+Inundated cells,6027770,cells,Cells where elevation in feet is less than or equal to the sea-level parameter.
+New scenario band cells,458956,cells,Cells above current sea level and within the default rise threshold.
+Inundated polygon count,20996,features,Raster-to-polygon output before dissolve.
+Inundated area,4850.14,sq km,Projected area in UTM Zone 17N.
+New scenario band area,368.93,sq km,Area newly highlighted between 0 ft and the sea-level parameter.
+Final area of concern,6402.20,sq km,Dissolved inundation polygon buffered by the default radius.

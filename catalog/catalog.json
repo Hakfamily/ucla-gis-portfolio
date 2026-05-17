@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updated": "2026-05-05",
+  "updated": "2026-05-17",
   "practices": [
     {
       "id": "ucla-unit01",
@@ -546,30 +546,90 @@
       "id": "ucla-unit07",
       "series": "UCLA Core",
       "unitNumber": 7,
-      "navTitle": "Unit 07",
-      "title": "Unit 07: 자료 도착 후 확정",
-      "clientBrief": "새 assignment 요구사항에 맞춰 데이터 수집, 분석, 지도 제작, Python 재현, PDF 보고서를 구축합니다.",
-      "icon": "🧩",
-      "status": "planned",
-      "difficulty": "intermediate",
+      "navTitle": "Unit 07: ModelBuilder Tool",
+      "title": "Unit 07: ModelBuilder 해수면 상승 도구",
+      "clientBrief": "DEM raster와 사용자 입력값을 받아 해수면 상승 위험 polygon을 자동 생성하는 ArcGIS ModelBuilder tool 제작 실습입니다.",
+      "icon": "🧰",
+      "status": "published",
+      "difficulty": "advanced",
       "estimatedHours": 5,
       "domain": [
-        "pending"
+        "modelbuilder",
+        "sea-level-rise",
+        "raster-modeling"
       ],
       "gisSkills": [
-        "assignment analysis",
-        "workflow reproduction"
+        "ModelBuilder",
+        "Raster Calculator",
+        "Raster to Polygon",
+        "Buffer",
+        "tool parameters"
       ],
-      "arcgisTools": [],
-      "pythonLibraries": [],
+      "arcgisTools": [
+        "ModelBuilder",
+        "Raster Calculator",
+        "Raster to Polygon",
+        "Make Feature Layer",
+        "Buffer"
+      ],
+      "pythonLibraries": [
+        "rasterio",
+        "numpy",
+        "geopandas",
+        "shapely",
+        "matplotlib",
+        "reportlab"
+      ],
       "outputs": [
         "webpage",
-        "pdf"
+        "pdf",
+        "png",
+        "csv",
+        "geojson"
       ],
       "sourceType": "course-assignment",
       "sourceId": "ucla-advanced-gis",
       "rubricId": "standard-dual-track",
-      "licenseNote": "Placeholder only. Publish no raw course files.",
+      "licenseNote": "Student-produced derivative material. Raw course PDFs and videos are not published.",
+      "pageUrl": "unit07.html",
+      "reportUrl": "reports/unit07/Sea_Level_Rise_ModelBuilder_UCLA_Unit07.pdf",
+      "thumbnailUrl": "reports/unit07/unit07_sea_level_scenario_map.png",
+      "reportTitle": "Unit 07: Sea level ModelBuilder tool",
+      "reportDesc": "ModelBuilder 필수 처리 순서를 Python으로 재현한 해수면 상승 시나리오 검증 보고서",
+      "assets": [
+        {
+          "type": "pdf",
+          "url": "reports/unit07/Sea_Level_Rise_ModelBuilder_UCLA_Unit07.pdf"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit07/unit07_sea_level_scenario_map.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit07/unit07_area_of_concern_map.png"
+        },
+        {
+          "type": "image",
+          "url": "reports/unit07/unit07_modelbuilder_workflow.png"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit07/unit07_scenario_summary.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit07/unit07_model_steps.csv"
+        },
+        {
+          "type": "csv",
+          "url": "reports/unit07/unit07_data_manifest.csv"
+        },
+        {
+          "type": "geojson",
+          "url": "reports/unit07/unit07_area_of_concern.geojson"
+        }
+      ],
       "prerequisites": [
         "ucla-unit06"
       ],

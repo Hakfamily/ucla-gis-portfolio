@@ -1,0 +1,4 @@
+item,source,path_or_url,role,status
+DEM raster,"Course-provided file, likely USGS EarthExplorer 1 arc-second DEM",unit-07/unit07-010-n32_w081_1arc_v2.tif,ModelBuilder input raster.,used
+GIS modeling reading,Course-provided Goodchild chapter PDF,unit-07/unit07-04-GIS and Modeling Overview.pdf,Conceptual support for model design discussion.,referenced
+ModelBuilder assignment,Course-provided assignment PDF,unit-07/unit07-09-assignment.pdf,"Required parameters, operations, deliverables, and rubric.",referenced
